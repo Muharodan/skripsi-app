@@ -17,3 +17,10 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::get('/hasilAHP', function () {
+    return view('hasilAHP');
+});
+
+Route::get('/hasilTOPSIS', function () {
+    return view('hasilTOPSIS');
+});
