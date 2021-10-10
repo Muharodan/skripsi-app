@@ -30,8 +30,8 @@
     </tr>
   </tbody>
 </table>
-<button class="btn btn-primary" name="fuzzy ahp">
-  <a class="fuzzyahp" href="hasil.blade.php">fuzzy ahp </a>
+<button class="btn btn-primary" name="fuzzy ahp" color="black">
+  <a class="fuzzyahp" href="hasil.blade.php" >fuzzy ahp </a>
 </button>
 <button class="btn btn-primary" name="fuzzy topsis"> fuzzy topsis </button>
 @endsection
