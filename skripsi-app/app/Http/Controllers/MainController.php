@@ -22,6 +22,7 @@ class MainController extends Controller
 
         if($request->btn==1){
             print("FUZZY AHP");
+            $ahp = new FAHPController();
         }else{
             print("FUZZY TOPSIS");
         }
