@@ -30,11 +30,18 @@
     </tr>
   </tbody>
 </table>
+
+<div class="buttons" style="text-align: center;">
   <a class="fuzzyahp" href="/hasilAHP">
-    <button class="btn btn-primary" name="fuzzy ahp">fuzzy ahp</button>    
+    <button class="btn btn-primary" name="fuzzy ahp">fuzzy ahp</button>
   </a>
   <a class="fuzzytopsis" href="/hasilTOPSIS">
     <button class="btn btn-primary" name="fuzzy topsis"> fuzzy topsis </button>
   </a>
+  <a class="upload" >
+    <button class="btn btn-primary" name="upload"> file upload </button>
+  </a>
+</div>
+
 
 @endsection
