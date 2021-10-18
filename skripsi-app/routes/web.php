@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,3 +25,5 @@ Route::get('/hasilAHP', function () {
 Route::get('/hasilTOPSIS', function () {
     return view('hasilTOPSIS');
 });
+
+Route::post('/process', [MainController::class, 'index']);

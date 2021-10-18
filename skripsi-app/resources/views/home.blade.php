@@ -31,16 +31,36 @@
   </tbody>
 </table>
 
-<div class="buttons" style="text-align: center;">
-  <a class="fuzzyahp" href="/hasilAHP">
+<div class="buttons">
+<a class="upload" >
+    <form action="{{url('/process')}}" method="post" enctype="multipart/form-data">
+      @csrf
+
+      Select excel file to upload
+      <br>
+
+      <input type="file" name="file">
+      <br>
+      <br>
+
+      <a class="fuzzyahp">
+        <button class="btn btn-primary" name="fuzzy_ahp" id="ahp" type="submit">Fuzzy AHP</button>
+      </a>
+      
+      <a class="fuzzytopsis">
+        <button class="btn btn-primary" name="fuzzy_topsis" id="topsis" type="submit">Fuzzy topsis</button>
+      </a>
+    </form>
+  </a>  
+  <br>
+  <!-- <a class="fuzzyahp" href="/hasilAHP">
     <button class="btn btn-primary" name="fuzzy ahp">fuzzy ahp</button>
   </a>
+  <br>
   <a class="fuzzytopsis" href="/hasilTOPSIS">
     <button class="btn btn-primary" name="fuzzy topsis"> fuzzy topsis </button>
-  </a>
-  <a class="upload" >
-    <button class="btn btn-primary" name="upload"> file upload </button>
-  </a>
+  </a> -->
+  
 </div>
 
 
