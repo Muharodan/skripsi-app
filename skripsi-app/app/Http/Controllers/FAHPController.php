@@ -3,15 +3,75 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
-class FAHPController extends Controller{
-    protected $pairwise; 
-    protected $fuzzified;
-    protected $hasilGeo;
 
-    function __construct(array $pairwise = null)
+class FAHPController extends Controller{
+    private $pairwise;
+
+    function __construct()
     {
-        $this->pairwise = $pairwise;
+        // broken link icx 0
+        // load time idx 1
+        // header size idx 2
+        // criteria weights idx 4
+        $this->pairwise = array(
+            array(1,2/1,4/1,0),
+            array(1/2,1,3/1,0),
+            array(1/4,1/3,1,0),
+        );
+
+        $this->pairwise = $this->normalize($this->pairwise);
+
+        $this->pairwise = $this->calculateCriteriaWeight($this->pairwise);
+        foreach($this->pairwise as $p){
+            print_r($p);
+            print("<br>");
+        }
+        
     }
+
+    /**
+     * Normalize pairwise matrix
+     */
+    private function normalize($matrix){
+        $a=0;
+        $b=0;
+        $c=0;
+        for($i=0;$i<3;$i++){
+            for($j=0;$j<3;$j++){
+                if($j==0) $a+=$matrix[$i][$j];
+                else if($j==1) $b+=$matrix[$i][$j];
+                else $c+=$matrix[$i][$j];
+            }
+        }
+
+        for($i=0;$i<3;$i++){
+            for($j=0;$j<3;$j++){
+                if($j==0) $matrix[$i][$j]=$matrix[$i][$j]/$a;
+                else if($j==1) $matrix[$i][$j]=$matrix[$i][$j]/$b;
+                else $matrix[$i][$j]=$matrix[$i][$j]/$c;
+            }
+        }
+
+        return $matrix;
+    }
+
+    /**
+     * Calculate Creiteria Weights
+     * from normalize matrix
+     */
+    private function calculateCriteriaWeight($matrix){
+        $temp=0;
+        for($i=0;$i<3;$i++){
+            for($j=0;$j<3;$j++){
+                $temp+=$matrix[$i][$j];
+            }
+            $matrix[$i][3]=$temp/3;
+            $temp=0;
+        }
+        return $matrix;
+    }
+
+    
 
     //membuat matrix triangular fuzzy number
     function FuzzyPairwise(array $pairwise){
