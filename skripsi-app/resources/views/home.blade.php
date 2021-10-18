@@ -44,11 +44,11 @@
       <br>
 
       <a class="fuzzyahp">
-        <button class="btn btn-primary" name="fuzzy_ahp" id="ahp" type="submit">Fuzzy AHP</button>
+        <button class="btn btn-primary" name="btn" id="ahp" type="submit" value="1">Fuzzy AHP</button>
       </a>
       
       <a class="fuzzytopsis">
-        <button class="btn btn-primary" name="fuzzy_topsis" id="topsis" type="submit">Fuzzy topsis</button>
+        <button class="btn btn-primary" name="btn" id="topsis" type="submit" value="2">Fuzzy topsis</button>
       </a>
     </form>
   </a>  
