@@ -9,6 +9,8 @@ class FAHPController extends Controller{
 
     private $fuzzyNumber;
 
+    private $geometricMean;
+
     function __construct()
     {
         // broken link icx 0
@@ -34,16 +36,20 @@ class FAHPController extends Controller{
         );
 
         $this->pairwise = $this->changeToFuzzyNumber($this->pairwise, $this->fuzzyNumber);
-        foreach($this->pairwise as $p){
-            print_r($p);
-            print("<br>");
-        }
+        
+        $this->calculateGeomecricMean($this->pairwise);
+        
+        // foreach($this->pairwise as $p){
+        //     print_r($p);
+        //     print("<br>");
+        // }
         
     }
 
     private function changeToFuzzyNumber($matrix, $fuzzyNumber){
-        for($i=0;$i<3;$i++){
-            for($j=0;$j<3;$j++){
+        $size = count($matrix);
+        for($i=0;$i<$size;$i++){
+            for($j=0;$j<$size;$j++){
                 if($matrix[$i][$j]>=1){
                     for($k=1;$k<=9;$k++){
                         if($matrix[$i][$j]==$k){
@@ -62,6 +68,7 @@ class FAHPController extends Controller{
                                     1/$fuzzyNumber[$k-1][0],
                                 );
                                 $matrix[$i][$j]=$arr;
+                                break;
                             }
                         }
                     }
@@ -70,6 +77,20 @@ class FAHPController extends Controller{
         }
 
         return $matrix;
+    }
+
+    private function calculateGeomecricMean($matrix){
+        $size = count($matrix);
+        for($i=0;$i<$size;$i++){
+            for($j=0;$j<$size;$j++){
+                for($k=0;$k<$size;$k++){
+                    print_r($matrix[$i][$j][$k]);
+                    print(" ");  
+                }  
+                print("<br>");
+            }
+            print("<br>");
+        }
     }
 
     /**
