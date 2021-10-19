@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 class FAHPController extends Controller{
     private $pairwise;
 
+    private $fuzzyNumber;
+
     function __construct()
     {
         // broken link icx 0
@@ -14,19 +16,60 @@ class FAHPController extends Controller{
         // header size idx 2
         // criteria weights idx 4
         $this->pairwise = array(
-            array(1,2/1,4/1,0),
-            array(1/2,1,3/1,0),
-            array(1/4,1/3,1,0),
+            array(1,2/1,4/1),
+            array(1/2,1,3/1),
+            array(1/4,1/3,1),
         );
 
-        $this->pairwise = $this->normalize($this->pairwise);
+        $this->fuzzyNumber = array(
+            array(1,1,1),//1
+            array(1,2,3),//2
+            array(2,3,4),//3
+            array(3,4,5),//4
+            array(4,5,6),//5
+            array(5,6,7),//6
+            array(6,7,8),//7
+            array(7,8,9),//8
+            array(9,9,9),//9
+        );
 
-        $this->pairwise = $this->calculateCriteriaWeight($this->pairwise);
+        $this->pairwise = $this->changeToFuzzyNumber($this->pairwise, $this->fuzzyNumber);
         foreach($this->pairwise as $p){
             print_r($p);
             print("<br>");
         }
         
+    }
+
+    private function changeToFuzzyNumber($matrix, $fuzzyNumber){
+        for($i=0;$i<3;$i++){
+            for($j=0;$j<3;$j++){
+                if($matrix[$i][$j]>=1){
+                    for($k=1;$k<=9;$k++){
+                        if($matrix[$i][$j]==$k){
+                            $matrix[$i][$j]=$fuzzyNumber[$k-1];
+                            break;
+                        }
+                    }
+                }else{
+                    for($k=1;$k<=9;$k++){
+                        if(!is_array($matrix[$i][$j])){
+                            $temp = $matrix[$i][$j]*$k;
+                            if($temp==1){
+                                $arr = array(
+                                    1/$fuzzyNumber[$k-1][2],
+                                    1/$fuzzyNumber[$k-1][1],
+                                    1/$fuzzyNumber[$k-1][0],
+                                );
+                                $matrix[$i][$j]=$arr;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $matrix;
     }
 
     /**
