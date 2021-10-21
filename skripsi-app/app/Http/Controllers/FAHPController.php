@@ -11,6 +11,8 @@ class FAHPController extends Controller{
 
     private $geometricMean;
 
+    private $fuzzyWeight;
+
     function __construct()
     {
         // broken link icx 0
@@ -19,15 +21,15 @@ class FAHPController extends Controller{
         // criteria weights idx 4
         $this->pairwise = array(
             //Sidik
-            // array(1,2/1,4/1),
-            // array(1/2,1,3/1),
-            // array(1/4,1/3,1),
+            array(1,2/1,4/1),
+            array(1/2,1,3/1),
+            array(1/4,1/3,1),
 
             //Youtube
-            array(1,5,4,7),
-            array(1/5,1,1/2,3),
-            array(1/4,2,1,3),
-            array(1/7,1/3,1/3,1),
+            // array(1,5,4,7),
+            // array(1/5,1,1/2,3),
+            // array(1/4,2,1,3),
+            // array(1/7,1/3,1/3,1),
 
         );
 
@@ -53,8 +55,11 @@ class FAHPController extends Controller{
         $this->geometricMean = $this->calculateGeomecricMean($this->pairwise);
         $this->print($this->geometricMean);
 
-        // print("<br>INVERS TOTAL GEOMECTRIC MEAN <br>");
-        // print_r($this->calculateFuzzyWeight($this->geometricMean));
+        print("<br>Fuzzy Weight Value <br>");
+        $this->fuzzyWeight = $this->calculateFuzzyWeight($this->geometricMean);
+        $this->print($this->fuzzyWeight);
+
+        
 
         // print("<br>GEOMETRIC MEAN TRANSPOSE <br>");
         // // //bacanya kanan ke kiri
@@ -135,6 +140,7 @@ class FAHPController extends Controller{
                 }
             }
         }
+        // hitung geometric mean
         foreach($temp as $row){
             $i=0;
             $idx = 0;
@@ -159,40 +165,39 @@ class FAHPController extends Controller{
      * from Geometric Mean
      */
     private function calculateFuzzyWeight($matrix){
-        $size=count($matrix);
-        $res=[];
+        $inverse=[];
+        $total = [];
 
         //calculate sum
-        for($i=0;$i<$size;$i++){
-            $temp=0;
-            for($j=0;$j<$size;$j++){
-                $temp+=$matrix[$i][$j];
+        $i=0;
+        foreach($matrix as $row){
+            $j=0;
+            foreach($row as $val){
+                if($i==0){
+                    array_push($total, $val);
+                }else{
+                    $total[$j]+=$val;
+                }
+                
+                $j++;
             }
-            array_push($res,$temp);
+            $i++;
+        }
+        // inverse
+        for($i=0;$i<3;$i++){
+            array_push($inverse,1/$total[3-$i-1]); 
         }
 
-        // calculate inverse
-        for($i=0,$j=$size-1;$i<$size,$j>=0;$i++,$j--){
-            $temp = $res[$i];
-            $res[$i]=$res[$j];
-            $res[$j]=$temp;
-        }
-
-
-        return $res;
-    }
-
-    private function transpose($matrix){
-        $size=count($matrix);
-        $res=[];
-        for($i=0;$i<$size;$i++){
-            for($j=0;$j<$size*$size;$j++){
-                $res[$i][$j]=0;
-                $res[$i][$j]=$matrix[$j][$i];
+        // fuzzy weight
+        for($i=0;$i<count($matrix);$i++){
+            for($j=0;$j<count($matrix[$i]);$j++){
+                $matrix[$i][$j]*=$inverse[$j];
             }
         }
-        return $res;
+
+        return $matrix;
     }
+
 
     /**
      * Normalize pairwise matrix
