@@ -12,6 +12,8 @@ class FAHPController extends Controller{
     private $geometricMean;
 
     private $fuzzyWeight;
+    
+    private $normalize;
 
     function __construct()
     {
@@ -21,15 +23,15 @@ class FAHPController extends Controller{
         // criteria weights idx 4
         $this->pairwise = array(
             //Sidik
-            array(1,2/1,4/1),
-            array(1/2,1,3/1),
-            array(1/4,1/3,1),
+            // array(1,2/1,4/1),
+            // array(1/2,1,3/1),
+            // array(1/4,1/3,1),
 
             //Youtube
-            // array(1,5,4,7),
-            // array(1/5,1,1/2,3),
-            // array(1/4,2,1,3),
-            // array(1/7,1/3,1/3,1),
+            array(1,5,4,7),
+            array(1/5,1,1/2,3),
+            array(1/4,2,1,3),
+            array(1/7,1/3,1/3,1),
 
         );
 
@@ -59,16 +61,9 @@ class FAHPController extends Controller{
         $this->fuzzyWeight = $this->calculateFuzzyWeight($this->geometricMean);
         $this->print($this->fuzzyWeight);
 
-        
-
-        // print("<br>GEOMETRIC MEAN TRANSPOSE <br>");
-        // // //bacanya kanan ke kiri
-        // $this->geometricMean=$this->transpose($this->geometricMean);
-        // $this->print($this->geometricMean);
-        // foreach($this->geometricMean as $p){
-        //     print_r($p);
-        //     print("<br>");
-        // }
+        print("<br>Normalize<br>");
+        $this->normalize = $this->calculateNormalize($this->fuzzyWeight);
+        print_r($this->normalize);
         
     }
 
@@ -202,27 +197,25 @@ class FAHPController extends Controller{
     /**
      * Normalize pairwise matrix
      */
-    private function normalize($matrix){
-        $a=0;
-        $b=0;
-        $c=0;
-        for($i=0;$i<3;$i++){
-            for($j=0;$j<3;$j++){
-                if($j==0) $a+=$matrix[$i][$j];
-                else if($j==1) $b+=$matrix[$i][$j];
-                else $c+=$matrix[$i][$j];
+    private function calculateNormalize($matrix){
+        $res=[];
+        $sum=0;
+        foreach($matrix as $row){
+            $total=0;
+            foreach($row as $val){
+                $total+=$val;
+                // print($val." Total: ".$total."<br>");
             }
+            array_push($res,$total/3);
+            $sum+=$total/3;
+        }
+        
+        
+        for($i=0;$i<count($res);$i++){
+            $res[$i]/=$sum;
         }
 
-        for($i=0;$i<3;$i++){
-            for($j=0;$j<3;$j++){
-                if($j==0) $matrix[$i][$j]=$matrix[$i][$j]/$a;
-                else if($j==1) $matrix[$i][$j]=$matrix[$i][$j]/$b;
-                else $matrix[$i][$j]=$matrix[$i][$j]/$c;
-            }
-        }
-
-        return $matrix;
+        print_r($res);
     }
 
     //membuat matrix triangular fuzzy number
