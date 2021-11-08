@@ -17,23 +17,26 @@ class FAHPController extends Controller{
 
     function __construct()
     {
+
+
         // broken link icx 0
         // load time idx 1
         // header size idx 2
         // criteria weights idx 4
         $this->pairwise = array(
             //Sidik
-            // array(1,2/1,4/1),
-            // array(1/2,1,3/1),
-            // array(1/4,1/3,1),
+            array(1,2/1,4/1),
+            array(1/2,1,3/1),
+            array(1/4,1/3,1),
 
             //Youtube
-            array(1,5,4,7),
-            array(1/5,1,1/2,3),
-            array(1/4,2,1,3),
-            array(1/7,1/3,1/3,1),
+            // array(1,5,4,7),
+            // array(1/5,1,1/2,3),
+            // array(1/4,2,1,3),
+            // array(1/7,1/3,1/3,1),
 
         );
+        
 
         $this->fuzzyNumber = array(
             array(1,1,1),//1
@@ -61,11 +64,110 @@ class FAHPController extends Controller{
         $this->fuzzyWeight = $this->calculateFuzzyWeight($this->geometricMean);
         $this->print($this->fuzzyWeight);
 
-        print("<br>Normalize<br>");
+        print("<br>Normalize Kriteria<br>");
         $this->normalize = $this->calculateNormalize($this->fuzzyWeight);
         print_r($this->normalize);
+
+
+        // $data=[0.102, 2.120, 4, 5.1];
+        // $data=[0.51, 4, 2.120, 0.102];
+        // $data=[0.102, 2.120, 0.047, 2.342];
+        // $data = [0.5, 0.3, 0.2, 1];
+        // $data = [6.1, 7, 8, 9];
+        // $data = [2.6, 0.5, 8, 5];
+
+        // // data sidik
+        $data = [0.105, 0.651, 0.051, 2.046, 0.088];
+        print("<br><br> Data Load Time<br>");
+        print_r($data);
+        print("<br>");
+        
+        // convert arr to pairwise comparision
+        $result = $this->convertLoadTime($data);
+        print("<br> Data Load Time Setelah di convert<br>");
+        print_r($result);
+        print("<br>");
+
+        $pairwiseLoadTime = $this->pairwiseComparison($result);
+        print("<br> Pairwise Load Time<br>");
+        $this->print($pairwiseLoadTime);
+        print("<br>");
+
+        // bacanya kanan ke kiri
+        $pairwiseLoadTime = $this->changeToFuzzyNumber($pairwiseLoadTime, $this->fuzzyNumber);
+        print("PAIRWISE SETELAH CHANGE TO FUZZY NUMBER ". "DENGAN UKURAN MATRIX ".count($pairwiseLoadTime) ."<br>");
+        $this->print($pairwiseLoadTime);
+
+        print("<br>GEOMETRIC MEAN<br>");
+        //bacanya atas ke bawah
+        $geometricMeanLT = $this->calculateGeomecricMean($pairwiseLoadTime);
+        $this->print($geometricMeanLT);
+
+        print("<br>Fuzzy Weight Value <br>");
+        $fuzzyWeightLT = $this->calculateFuzzyWeight($geometricMeanLT);
+        $this->print($fuzzyWeightLT);
+
+        print("<br>Normalize Kriteria<br>");
+        $normalizeLT = $this->calculateNormalize($fuzzyWeightLT);
+        print_r($normalizeLT);
+
+        
+
+        // $this->print($this->pairwise);
         
     }
+
+    private function convertLoadTime($data){
+        $result=[];
+        
+        for($i = 0; $i<count($data); $i++){
+            $temp = $data[$i];
+            if($temp>=0 && $temp<=2)array_push($result, 1); // baik
+            else if($temp>2 && $temp<=3)array_push($result, 2); // antara baik dan cukup
+            else if($temp>3 && $temp<=5)array_push($result, 3); // cukup
+            else if($temp>5 && $temp<=6)array_push($result, 4); // antara cukup dan kurang
+            else array_push($result, 5); // kurang 
+        }
+
+        return $result;
+    }
+    
+    private function pairwiseComparison($data){
+        $pairwiseLoadTime=[];
+        for($i = 0; $i<count($data); $i++){
+            $pairwiseLoadTime[$i]=[];
+        }
+        for($i = 0; $i<count($data); $i++){
+            
+            for($j = $i; $j<count($data); $j++){
+                if(empty($pairwiseLoadTime[$i][$j])){
+                    $pairwiseLoadTime[$i][$j]=[];
+                }
+                if(empty($pairwiseLoadTime[$j][$i])){
+                    $pairwiseLoadTime[$j][$i]=[];
+                }
+                if($data[$i]==$data[$j]){ // jika di kategori yang sama atau index yang sama
+                    $pairwiseLoadTime[$i][$j]=1;
+                    $pairwiseLoadTime[$j][$i]=1;
+                }else{
+                    $temp = $data[$i]-$data[$j];
+                    if($temp<0){
+                        $temp = abs($temp)+1;
+                        $pairwiseLoadTime[$i][$j]=$temp;
+                        $pairwiseLoadTime[$j][$i]=1/$temp;
+                    }else{
+                        $temp = abs($temp)+1;
+                        $pairwiseLoadTime[$i][$j]=1/$temp;
+                        $pairwiseLoadTime[$j][$i]=$temp;
+                    }
+                    
+                }
+            }
+        }
+        return $pairwiseLoadTime;
+    }
+
+
 
     private function print($matrix){
         $size = count($matrix);
