@@ -171,11 +171,11 @@ class FAHPController extends Controller{
         $result=[];
         
         for($i = 0; $i<count($data); $i++){
-            $temp = $data[$i]/32000;
-            if($temp>=0 && $temp<=32)array_push($result, 1); // baik
-            else if($temp>32 && $temp<=33)array_push($result, 2); // antara baik dan cukup
-            else if($temp>33 && $temp<=64)array_push($result, 3); // cukup
-            else if($temp>64 && $temp<=65)array_push($result, 4); // antara cukup dan kurang
+            $temp = $data[$i];
+            if($temp>=0 && $temp<=32000)array_push($result, 1); // baik
+            else if($temp>32000 && $temp<=33000)array_push($result, 2); // antara baik dan cukup
+            else if($temp>33000 && $temp<=64000)array_push($result, 3); // cukup
+            else if($temp>64000 && $temp<=65000)array_push($result, 4); // antara cukup dan kurang
             else array_push($result, 5); // kurang 
         }
 
