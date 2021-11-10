@@ -186,12 +186,26 @@ class FAHPController extends Controller{
         $result=[];
         
         for($i = 0; $i<count($data); $i++){
-            $temp = $data[$i];
-            if($temp>=0 && $temp<=32000)array_push($result, 1); // baik
-            else if($temp>32000 && $temp<=33000)array_push($result, 2); // antara baik dan cukup
-            else if($temp>33000 && $temp<=64000)array_push($result, 3); // cukup
-            else if($temp>64000 && $temp<=65000)array_push($result, 4); // antara cukup dan kurang
-            else array_push($result, 5); // kurang 
+            //grafik baru
+            $x = $data[$i];
+            if($x>=0 && $x<=22000){ // sangat baik
+                array_push($result, 1);
+            }else if($x>22000 && $x<=40000){ // baik
+                array_push($result, 2);
+            }else if($x>40000 && $x<=56000){ // cukup
+                array_push($result, 3);
+            }else if($x>56000 && $x<=72000){ // kurang
+                array_push($result, 4);
+            }else if($x>72000){ //  sangat kurang
+                array_push($result, 5);
+            }
+            // grafik lama
+            // $temp = $data[$i];
+            // if($temp>=0 && $temp<=32000)array_push($result, 1); // baik
+            // else if($temp>32000 && $temp<=33000)array_push($result, 2); // antara baik dan cukup
+            // else if($temp>33000 && $temp<=64000)array_push($result, 3); // cukup
+            // else if($temp>64000 && $temp<=65000)array_push($result, 4); // antara cukup dan kurang
+            // else array_push($result, 5); // kurang 
         }
 
         return $result;
