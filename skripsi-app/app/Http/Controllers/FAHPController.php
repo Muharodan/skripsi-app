@@ -79,7 +79,7 @@ class FAHPController extends Controller{
         // data sidik
         // LOAD TIME
         $data = [105, 651, 051, 2046, 88];
-        print("<br><br> Data Load Time<br>");
+        print("<br><br> Data Load Time (dalam ms)<br>");
         print_r($data);
         print("<br>");
         
@@ -156,12 +156,27 @@ class FAHPController extends Controller{
         $result=[];
         
         for($i = 0; $i<count($data); $i++){
-            $temp = $data[$i]/1000;
-            if($temp>=0 && $temp<=2)array_push($result, 1); // baik
-            else if($temp>2 && $temp<=3)array_push($result, 2); // antara baik dan cukup
-            else if($temp>3 && $temp<=5)array_push($result, 3); // cukup
-            else if($temp>5 && $temp<=6)array_push($result, 4); // antara cukup dan kurang
-            else array_push($result, 5); // kurang 
+            $x = $data[$i]/1000;
+            // grafik baru
+            if($x>=0 && $x<=2.5){ // sangat baik
+                array_push($result, 1);
+            }else if($x>2.5 && $x<=3.5){ // baik
+                array_push($result, 2);
+            }else if($x>3.5 && $x<=4.5){ // cukup
+                array_push($result, 3);
+            }else if($x>4.5 && $x<=5.5){ // kurang
+                array_push($result, 4);
+            }else if($x>5.5){ //  sangat kurang
+                array_push($result, 5);
+            }
+            
+            // grafik lama
+            // $temp = $data[$i]/1000;
+            // if($temp>=0 && $temp<=2)array_push($result, 1); // baik
+            // else if($temp>2 && $temp<=3)array_push($result, 2); // antara baik dan cukup
+            // else if($temp>3 && $temp<=5)array_push($result, 3); // cukup
+            // else if($temp>5 && $temp<=6)array_push($result, 4); // antara cukup dan kurang
+            // else array_push($result, 5); // kurang 
         }
 
         return $result;
