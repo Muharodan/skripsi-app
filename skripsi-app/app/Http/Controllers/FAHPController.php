@@ -78,7 +78,7 @@ class FAHPController extends Controller{
 
         // data sidik
         // LOAD TIME
-        $data = [105, 651, 051, 2046, 88];
+        $data = [105, 651, 051, 2046];
         print("<br><br> Data Load Time (dalam ms)<br>");
         print_r($data);
         print("<br>");
@@ -149,6 +149,43 @@ class FAHPController extends Controller{
         $normalizeSize = $this->calculateNormalize($fuzzyWeightSize);
         print_r($normalizeSize);
 
+        // Broken Link
+        // google, facebook, amazon, imdb (dalam bytes)
+        $data = [0, 40, 75, 28];
+        print("<br><br> Data Broken Link<br>");
+        print_r($data);
+        print("<br>");
+        
+        // convert arr to pairwise comparision
+        $result = $this->convertBrokenLink($data);
+        print("<br> Data Broken Link setelah di convert<br>");
+        print_r($result);
+        print("<br>");
+
+        $pairwiseBL = $this->pairwiseComparison($result);
+        print("<br> Pairwise Broken Link<br>");
+        $this->print($pairwiseBL);
+        print("<br>");
+
+        // bacanya kanan ke kiri
+        $pairwiseBL = $this->changeToFuzzyNumber($pairwiseBL, $this->fuzzyNumber);
+        print("PAIRWISE SETELAH CHANGE TO FUZZY NUMBER ". "DENGAN UKURAN MATRIX ".count($pairwiseBL) ."<br>");
+        $this->print($pairwiseBL);
+
+        print("<br>GEOMETRIC MEAN<br>");
+        //bacanya atas ke bawah
+        $geometricMeanBL = $this->calculateGeomecricMean($pairwiseBL);
+        $this->print($geometricMeanBL);
+
+        print("<br>Fuzzy Weight Value Broken Link<br>");
+        $fuzzyWeightBL = $this->calculateFuzzyWeight($geometricMeanBL);
+        $this->print($fuzzyWeightBL);
+
+        print("<br>Normalize Broken Link<br>");
+        $normalizeBL = $this->calculateNormalize($fuzzyWeightBL);
+        print_r($normalizeBL);
+
+
         
     }
 
@@ -208,6 +245,27 @@ class FAHPController extends Controller{
             // else array_push($result, 5); // kurang 
         }
 
+        return $result;
+    }
+
+    private function convertBrokenLink($data){
+        $result=[];
+        
+        for($i = 0; $i<count($data); $i++){
+            //grafik baru
+            $x = $data[$i];
+            if($x>=0 && $x<=37.5){ // sangat baik
+                array_push($result, 1);
+            }else if($x>37.5 && $x<=52.5){ // baik
+                array_push($result, 2);
+            }else if($x>52.5 && $x<=77.5){ // cukup
+                array_push($result, 3);
+            }else if($x>77.5 && $x<=125){ // kurang
+                array_push($result, 4);
+            }else if($x>125){ //  sangat kurang
+                array_push($result, 5);
+            }
+        }
         return $result;
     }
     
