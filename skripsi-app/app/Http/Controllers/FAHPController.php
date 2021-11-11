@@ -185,10 +185,19 @@ class FAHPController extends Controller{
         $normalizeBL = $this->calculateNormalize($fuzzyWeightBL);
         print_r($normalizeBL);
 
+        print("<br>");
         // print(count($this->normalize));
         $result = $this->calculateResult($this->normalize, $normalizeBL, $normalizeLT, $normalizeSize);
         // $this->print($result);
         print_r($result);
+
+        $max = array_keys($result, max($result));
+        print("<br>");
+        print("Index max: ".$max[0]. "dengan nilai: ".$result[$max[0]]);
+
+        $min = array_keys($result, min($result));
+        print("<br>");
+        print("Index min: ".$min[0]. "dengan nilai: ".$result[$min[0]]);
     }
 
     private function calculateResult($kriteria, $brokenlink, $loadTime, $headerSize){
