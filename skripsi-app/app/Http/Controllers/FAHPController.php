@@ -185,8 +185,42 @@ class FAHPController extends Controller{
         $normalizeBL = $this->calculateNormalize($fuzzyWeightBL);
         print_r($normalizeBL);
 
+        // print(count($this->normalize));
+        $result = $this->calculateResult($this->normalize, $normalizeBL, $normalizeLT, $normalizeSize);
+        // $this->print($result);
+        print_r($result);
+    }
 
-        
+    private function calculateResult($kriteria, $brokenlink, $loadTime, $headerSize){
+        $arr = [];
+        for($i = 0; $i <count($kriteria);$i++){
+            $arrt[$i]=[];
+            for($j = 0; $j<count($brokenlink);$j++){
+                $arr[$i][$j]=[];
+                if($i==0){ //broken link
+                    array_push($arr[$i][$j],$kriteria[$i]*$brokenlink[$j]);
+                }else if($i==1){ //load time
+                    array_push($arr[$i][$j],$kriteria[$i]*$loadTime[$j]);
+                }else{ // header size
+                    array_push($arr[$i][$j],$kriteria[$i]*$headerSize[$j]);
+                }
+            }
+        }
+
+        // print_r($arr);
+        print("<br>");
+        $result=[];
+        // sum
+        for($i=0;$i<count($arr);$i++){
+            for($j=0;$j<count($arr[$i]);$j++){
+                if(empty($result[$j])){
+                    $result[$j]=$arr[$i][$j][0];
+                }else{
+                    $result[$j]+=$arr[$i][$j][0];
+                } 
+            }
+        }
+        return $result;
     }
 
     private function convertLoadTime($data){
@@ -454,7 +488,7 @@ class FAHPController extends Controller{
             $res[$i]/=$sum;
         }
 
-        print_r($res);
+        return $res;
     }
 }
 
