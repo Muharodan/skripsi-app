@@ -26,4 +26,8 @@ Route::get('/hasilTOPSIS', function () {
     return view('hasilTOPSIS');
 });
 
-Route::post('/process', [MainController::class, 'index']);
+Route::get('/home', function () {
+    return view('home');
+});
+
+// Route::post('/hasilAHP', [MainController::class, 'index']);
