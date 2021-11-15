@@ -30,4 +30,4 @@ Route::get('/home', function () {
     return view('home');
 });
 
-// Route::post('/hasilAHP', [MainController::class, 'index']);
+Route::post('/process', [MainController::class, 'index']);
