@@ -12,9 +12,9 @@ class MainController extends Controller
     private $data;
 
     public function index(Request $request){
-        $location = $this->upload($request);
+        // $location = $this->upload($request);
 
-        $this->load($location);
+        // $this->load($location);
         
 
         // test data dengan cara diprint
