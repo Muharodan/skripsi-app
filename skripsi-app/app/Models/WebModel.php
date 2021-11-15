@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class WebModel extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'id',
+        'nama_web',
+        'broken_link',
+        'page_load_time',
+        'size_web'
+    ];
 }
