@@ -61,16 +61,16 @@
   </table>
 
   <div class="buttons">
-    <!-- <a class="upload" >
-    <form action="{{url('/hasilAHP')}}" method="post" enctype="multipart/form-data">
+    <a class="upload" >
+    <form action="{{url('/process')}}" method="post" enctype="multipart/form-data">
       @csrf
 
-      Select excel file to upload
+      <!-- Select excel file to upload
       <br>
 
       <input type="file" name="file">
       <br>
-      <br>
+      <br> -->
 
       <a class="fuzzyahp">
         <button class="btn btn-primary" name="btn" id="ahp" type="submit" value="1">Fuzzy AHP</button>
@@ -80,14 +80,14 @@
         <button class="btn btn-primary" name="btn" id="topsis" type="submit" value="2">Fuzzy topsis</button>
       </a>
     </form>
-  </a>   -->
-    <br>
+  </a>  
+    <!-- <br>
     <a class="fuzzyahp" href="/hasilAHP">
       <button class="btn btn-primary" name="fuzzy ahp">fuzzy ahp</button>
     </a>
     <a class="fuzzytopsis" href="/hasilTOPSIS">
       <button class="btn btn-primary" name="fuzzy topsis"> fuzzy topsis </button>
-    </a>
+    </a> -->
 
   </div>
 </body>
