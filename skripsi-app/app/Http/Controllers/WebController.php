@@ -30,8 +30,8 @@ class WebController extends Controller
         ");
     }
 
-    public function getName($id){
-        return DB::table('webs')->where('id', $id+1)->value('nama_web');
+    public function find($id){
+        return DB::table('webs')->find($id+1);
         
     }
 }
