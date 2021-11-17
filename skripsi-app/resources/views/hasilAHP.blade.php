@@ -18,15 +18,32 @@
   <h2>ini contoh hasil tanpa perhitungan berdasarkan load time</h2>
 
   <table class="table table-striped">
-    <thead>
+    <!-- <thead> -->
       <tr>
         <th scope="col">Alternatif\Kriteria</th>
+        <th scope="col">Broken Link</th>
         <th scope="col">Page Load Time</th>
         <th scope="col">Size</th>
-        <th scope="col">Broken Link</th>
       </tr>
-    </thead>
-    <tbody>
+    <!-- </thead> -->
+    <!-- <tbody> -->
+      <?php
+
+        $result = Session::get('result')->result;
+        // $keys = array_keys($result);
+        // print_r($result);
+        foreach($result as $row){
+          echo "<tr>";
+          foreach($row as $val){
+            echo "<td>".$val."</td>";
+          }
+          echo "</tr>";
+        }
+
+      ?>
+    <!-- </tbody> -->
+
+    <!-- <tbody>
       <tr>
         <th scope="row">Amazon</th>
         <td>0.047 seconds</td>
@@ -57,7 +74,8 @@
         <td>84027</td>
         <td>0</td>
       </tr>
-    </tbody>
+    </tbody> -->
+    
   </table>
 
   <br>
