@@ -16,11 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('index');
 
-Route::get('/hasilAHP', function () {
-    return view('hasilAHP');
-});
+Route::get('/hasilAHP', [MainController::class, 'check'])->name('hasilAHP');
 
 Route::get('/hasilTOPSIS', function () {
     return view('hasilTOPSIS');
