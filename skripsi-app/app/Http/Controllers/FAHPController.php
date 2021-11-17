@@ -7,6 +7,8 @@ use Illuminate\Support\Arr;
 class FAHPController extends Controller{
     private $fuzzyNumber;
 
+    public $result;
+
     private WebController $webController;
 
     function __construct()
@@ -45,61 +47,61 @@ class FAHPController extends Controller{
 
         // bacanya kanan ke kiri
         $DK = $this->changeToFuzzyNumber($DK, $this->fuzzyNumber);
-        print("PAIRWISE SETELAH CHANGE TO FUZZY NUMBER ". "DENGAN UKURAN MATRIX ".count($DK) ."<br>");
-        $this->print($DK);
+        // print("PAIRWISE SETELAH CHANGE TO FUZZY NUMBER ". "DENGAN UKURAN MATRIX ".count($DK) ."<br>");
+        // $this->print($DK);
 
-        print("<br>GEOMETRIC MEAN<br>");
+        // print("<br>GEOMETRIC MEAN<br>");
         //bacanya atas ke bawah
         $GMK = $this->calculateGeomecricMean($DK);
         $this->print($GMK);
 
-        print("<br>Fuzzy Weight Value <br>");
+        // print("<br>Fuzzy Weight Value <br>");
         $FWK = $this->calculateFuzzyWeight($GMK);
-        $this->print($FWK);
+        // $this->print($FWK);
 
-        print("<br>Normalize Kriteria<br>");
+        // print("<br>Normalize Kriteria<br>");
         $NK = $this->calculateNormalize($FWK);
-        print_r($NK);
+        // print_r($NK);
 
         // Broken Link
         // google, facebook, amazon, imdb (dalam bytes)
         // $DBL = [0, 40, 75, 28];
         $DBL = $this->webController->getBrokenLink();
         $DBL = $this->convertToArray2D($DBL,0);
-        print("<br><br> Data Broken Link<br>");
-        print_r($DBL);
-        print("<br>");
+        // print("<br><br> Data Broken Link<br>");
+        // print_r($DBL);
+        // print("<br>");
         
         // convert arr to pairwise comparision
         $DBL = $this->convertBrokenLink($DBL);
-        print("<br> Data Broken Link setelah di convert<br>");
-        print_r($DBL);
-        print("<br>");
+        // print("<br> Data Broken Link setelah di convert<br>");
+        // print_r($DBL);
+        // print("<br>");
 
         $DBL = $this->pairwiseComparison($DBL);
-        print("<br> Pairwise Broken Link<br>");
-        $this->print($DBL);
-        print("<br>");
+        // print("<br> Pairwise Broken Link<br>");
+        // $this->print($DBL);
+        // print("<br>");
 
         // bacanya kanan ke kiri
         $DBL = $this->changeToFuzzyNumber($DBL, $this->fuzzyNumber);
-        print("PAIRWISE SETELAH CHANGE TO FUZZY NUMBER ". "DENGAN UKURAN MATRIX ".count($DBL) ."<br>");
-        $this->print($DBL);
+        // print("PAIRWISE SETELAH CHANGE TO FUZZY NUMBER ". "DENGAN UKURAN MATRIX ".count($DBL) ."<br>");
+        // $this->print($DBL);
 
-        print("<br>GEOMETRIC MEAN<br>");
+        // print("<br>GEOMETRIC MEAN<br>");
         //bacanya atas ke bawah
         $GMBL = $this->calculateGeomecricMean($DBL);
-        $this->print($GMBL);
+        // $this->print($GMBL);
 
-        print("<br>Fuzzy Weight Value Broken Link<br>");
+        // print("<br>Fuzzy Weight Value Broken Link<br>");
         $FWBL = $this->calculateFuzzyWeight($GMBL);
-        $this->print($FWBL);
+        // $this->print($FWBL);
 
-        print("<br>Normalize Broken Link<br>");
+        // print("<br>Normalize Broken Link<br>");
         $NBL = $this->calculateNormalize($FWBL);
-        print_r($NBL);
+        // print_r($NBL);
 
-        print("<br>");
+        // print("<br>");
 
 
         // $data=[0.102, 2.120, 4, 5.1];
@@ -114,90 +116,124 @@ class FAHPController extends Controller{
         // $data = [105, 651, 051, 2046];
         $DPLT = $this->webController->getPageLoadTime();
         $DPLT = $this->convertToArray2D($DPLT,1);
-        print("<br><br> Data Load Time (dalam ms)<br>");
-        print_r($DPLT);
-        print("<br>");
+        // print("<br><br> Data Load Time (dalam ms)<br>");
+        // print_r($DPLT);
+        // print("<br>");
         
         // convert arr to pairwise comparision
         $DPLT = $this->convertLoadTime($DPLT);
-        print("<br> Data Load Time Setelah di convert<br>");
-        print_r($DPLT);
-        print("<br>");
+        // print("<br> Data Load Time Setelah di convert<br>");
+        // print_r($DPLT);
+        // print("<br>");
 
         $DPLT = $this->pairwiseComparison($DPLT);
-        print("<br> Pairwise Load Time<br>");
-        $this->print($DPLT);
-        print("<br>");
+        // print("<br> Pairwise Load Time<br>");
+        // $this->print($DPLT);
+        // print("<br>");
 
         // bacanya kanan ke kiri
         $DPLT = $this->changeToFuzzyNumber($DPLT, $this->fuzzyNumber);
-        print("PAIRWISE SETELAH CHANGE TO FUZZY NUMBER ". "DENGAN UKURAN MATRIX ".count($DPLT) ."<br>");
-        $this->print($DPLT);
+        // print("PAIRWISE SETELAH CHANGE TO FUZZY NUMBER ". "DENGAN UKURAN MATRIX ".count($DPLT) ."<br>");
+        // $this->print($DPLT);
 
-        print("<br>GEOMETRIC MEAN<br>");
+        // print("<br>GEOMETRIC MEAN<br>");
         //bacanya atas ke bawah
         $GMPLT = $this->calculateGeomecricMean($DPLT);
-        $this->print($GMPLT);
+        // $this->print($GMPLT);
 
-        print("<br>Fuzzy Weight Value Load Time (dalam ms)<br>");
+        // print("<br>Fuzzy Weight Value Load Time (dalam ms)<br>");
         $FWPLT = $this->calculateFuzzyWeight($GMPLT);
-        $this->print($FWPLT);
+        // $this->print($FWPLT);
 
-        print("<br>Normalize Load Time<br>");
+        // print("<br>Normalize Load Time<br>");
         $NPLT = $this->calculateNormalize($FWPLT);
-        print_r($NPLT);
+        // print_r($NPLT);
 
         // SIZE
         // google, facebook, amazon, imdb (dalam bytes)
         // $data = [16020, 84027, 281, 670916];
         $DSW = $this->webController->getSizeWeb();
         $DSW = $this->convertToArray2D($DSW, 2);
-        print("<br><br> Data Size (dalam bytes)<br>");
-        print_r($DSW);
-        print("<br>");
+        // print("<br><br> Data Size (dalam bytes)<br>");
+        // print_r($DSW);
+        // print("<br>");
         
         // convert arr to pairwise comparision
         $DSW = $this->convertSize($DSW);
-        print("<br> Data Size setelah di convert<br>");
-        print_r($DSW);
-        print("<br>");
+        // print("<br> Data Size setelah di convert<br>");
+        // print_r($DSW);
+        // print("<br>");
 
         $DSW = $this->pairwiseComparison($DSW);
-        print("<br> Pairwise Size<br>");
-        $this->print($DSW);
-        print("<br>");
+        // print("<br> Pairwise Size<br>");
+        // $this->print($DSW);
+        // print("<br>");
 
         // bacanya kanan ke kiri
         $DSW = $this->changeToFuzzyNumber($DSW, $this->fuzzyNumber);
-        print("PAIRWISE SETELAH CHANGE TO FUZZY NUMBER ". "DENGAN UKURAN MATRIX ".count($DSW) ."<br>");
-        $this->print($DSW);
+        // print("PAIRWISE SETELAH CHANGE TO FUZZY NUMBER ". "DENGAN UKURAN MATRIX ".count($DSW) ."<br>");
+        // $this->print($DSW);
 
-        print("<br>GEOMETRIC MEAN<br>");
+        // print("<br>GEOMETRIC MEAN<br>");
         //bacanya atas ke bawah
         $GMSW = $this->calculateGeomecricMean($DSW);
-        $this->print($GMSW);
+        // $this->print($GMSW);
 
-        print("<br>Fuzzy Weight Value Size<br>");
+        // print("<br>Fuzzy Weight Value Size<br>");
         $FWSW = $this->calculateFuzzyWeight($GMSW);
-        $this->print($FWSW);
+        // $this->print($FWSW);
 
-        print("<br>Normalize Size<br>");
+        // print("<br>Normalize Size<br>");
         $NSW = $this->calculateNormalize($FWSW);
-        print_r($NSW);
+        // print_r($NSW);
 
-        
+        // print("<br>Result<br>");
         // print(count($this->normalize));
         $result = $this->calculateResult($NK, $NBL, $NPLT, $NSW);
         // $this->print($result);
-        print_r($result);
+        // print_r($result);
 
-        $max = array_keys($result, max($result));
-        print("<br>");
-        print("Index max: ".$max[0]. " dengan nilai: ".$result[$max[0]]." Pada web : ".$this->webController->getName($max[0]));
+        // $max = array_keys($result, max($result));
+        // print("<br>");
+        // print("Index max: ".$max[0]. " dengan nilai: ".$result[$max[0]]." Pada web : ");
+        // print_r($this->webController->find($max[0]));
 
-        $min = array_keys($result, min($result));
-        print("<br>");
-        print("Index min: ".$min[0]. " dengan nilai: ".$result[$min[0]]." Pada web : ".$this->webController->getName($min[0]));
+        // $min = array_keys($result, min($result));
+        // print("<br>");
+        // print("Index min: ".$min[0]. " dengan nilai: ".$result[$min[0]]." Pada web : ");
+        // print_r($this->webController->find($min[0]));
+
+        $res=[];
+        for($i=0;$i<count($result);$i++){
+            $res["id-".($i)]=$result[$i];
+        }
+
+        // print("<br>");
+        // sort besar ke kecil
+        arsort($res);
+        // print_r($res);
+
+        // print("<br>");
+        $this->result=[];
+        $keys=array_keys($res);
+        foreach($keys as $k){
+            $id = substr($k, 3)*1;
+            $data = $this->webController->find($id);
+            $this->result[$id]=[];
+            array_push($this->result[$id], $data->nama_web);
+            array_push($this->result[$id], $data->broken_link);
+            array_push($this->result[$id], $data->page_load_time);
+            array_push($this->result[$id], $data->size_web);
+            // print($id);
+            // print("<br>");
+            // print_r($this->result[$id]);
+            // print("<br>");
+        }
+
+        // $this->result=$res;
+
+        return $this->result;
+       
     }
 
     private function convertToArray2D($data, $mode){
