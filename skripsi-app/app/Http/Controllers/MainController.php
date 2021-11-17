@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Importer;
+use Illuminate\Support\Facades\Session;
 
 class MainController extends Controller
 {
@@ -24,10 +25,23 @@ class MainController extends Controller
             print("FUZZY AHP");
             print("<br>");
             $ahp = new FAHPController();
+            // print_r($ahp);
+
+
+            return redirect()->route('hasilAHP')->with(['result'=>$ahp]);
         }else{
             print("FUZZY TOPSIS");
         }
         
+    }
+
+    public function check(){
+        if(Session::get('result')!=null){
+            return view('/hasilAHP');
+            // print_r(Session::get('result'));
+        }else{
+            return redirect()->route('index');
+        }
     }
 
     /**
