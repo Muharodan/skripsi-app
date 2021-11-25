@@ -5,28 +5,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
 class FAHPController extends Controller{
-    private $fuzzyNumber;
 
     public $result;
 
-    private WebController $webController;
-
-    function __construct()
+    function __construct($brokenLink, $pageLoadTime, $sizeWeb, $fuzzyNumber, $webController)
     {
-
-        $this->webController = new WebController();
-
-        $this->fuzzyNumber = array(
-            array(1,1,1),//1
-            array(1,2,3),//2
-            array(2,3,4),//3
-            array(3,4,5),//4
-            array(4,5,6),//5
-            array(5,6,7),//6
-            array(6,7,8),//7
-            array(7,8,9),//8
-            array(9,9,9),//9
-        );
 
         // broken_link idx 0
         // page_load_time idx 1
@@ -46,7 +29,7 @@ class FAHPController extends Controller{
         );
 
         // bacanya kanan ke kiri
-        $DK = $this->changeToFuzzyNumber($DK, $this->fuzzyNumber);
+        $DK = $this->changeToFuzzyNumber($DK, $fuzzyNumber);
         // print("PAIRWISE SETELAH CHANGE TO FUZZY NUMBER ". "DENGAN UKURAN MATRIX ".count($DK) ."<br>");
         // $this->print($DK);
 
@@ -66,7 +49,7 @@ class FAHPController extends Controller{
         // Broken Link
         // google, facebook, amazon, imdb (dalam bytes)
         // $DBL = [0, 40, 75, 28];
-        $DBL = $this->webController->getBrokenLink();
+        $DBL = $brokenLink;
         $DBL = $this->convertToArray2D($DBL,0);
         // print("<br><br> Data Broken Link<br>");
         // print_r($DBL);
@@ -84,7 +67,7 @@ class FAHPController extends Controller{
         // print("<br>");
 
         // bacanya kanan ke kiri
-        $DBL = $this->changeToFuzzyNumber($DBL, $this->fuzzyNumber);
+        $DBL = $this->changeToFuzzyNumber($DBL, $fuzzyNumber);
         // print("PAIRWISE SETELAH CHANGE TO FUZZY NUMBER ". "DENGAN UKURAN MATRIX ".count($DBL) ."<br>");
         // $this->print($DBL);
 
@@ -114,7 +97,7 @@ class FAHPController extends Controller{
         // data sidik
         // LOAD TIME
         // $data = [105, 651, 051, 2046];
-        $DPLT = $this->webController->getPageLoadTime();
+        $DPLT = $pageLoadTime;
         $DPLT = $this->convertToArray2D($DPLT,1);
         // print("<br><br> Data Load Time (dalam ms)<br>");
         // print_r($DPLT);
@@ -132,7 +115,7 @@ class FAHPController extends Controller{
         // print("<br>");
 
         // bacanya kanan ke kiri
-        $DPLT = $this->changeToFuzzyNumber($DPLT, $this->fuzzyNumber);
+        $DPLT = $this->changeToFuzzyNumber($DPLT, $fuzzyNumber);
         // print("PAIRWISE SETELAH CHANGE TO FUZZY NUMBER ". "DENGAN UKURAN MATRIX ".count($DPLT) ."<br>");
         // $this->print($DPLT);
 
@@ -152,7 +135,7 @@ class FAHPController extends Controller{
         // SIZE
         // google, facebook, amazon, imdb (dalam bytes)
         // $data = [16020, 84027, 281, 670916];
-        $DSW = $this->webController->getSizeWeb();
+        $DSW = $sizeWeb;
         $DSW = $this->convertToArray2D($DSW, 2);
         // print("<br><br> Data Size (dalam bytes)<br>");
         // print_r($DSW);
@@ -170,7 +153,7 @@ class FAHPController extends Controller{
         // print("<br>");
 
         // bacanya kanan ke kiri
-        $DSW = $this->changeToFuzzyNumber($DSW, $this->fuzzyNumber);
+        $DSW = $this->changeToFuzzyNumber($DSW, $fuzzyNumber);
         // print("PAIRWISE SETELAH CHANGE TO FUZZY NUMBER ". "DENGAN UKURAN MATRIX ".count($DSW) ."<br>");
         // $this->print($DSW);
 
@@ -218,7 +201,7 @@ class FAHPController extends Controller{
         $keys=array_keys($res);
         foreach($keys as $k){
             $id = substr($k, 3)*1;
-            $data = $this->webController->find($id);
+            $data = $webController->find($id);
             $this->result[$id]=[];
             array_push($this->result[$id], $data->nama_web);
             array_push($this->result[$id], $data->broken_link);
