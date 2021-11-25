@@ -11,6 +11,24 @@ use Illuminate\Support\Facades\Session;
 class MainController extends Controller
 {
     private $data;
+    private WebController $webController;
+    private $fuzzyNumber;
+
+    public function __construct(){
+        $this->webController = new WebController();
+        $this->fuzzyNumber = array(
+            array(1,1,1),//1
+            array(1,2,3),//2
+            array(2,3,4),//3
+            array(3,4,5),//4
+            array(4,5,6),//5
+            array(5,6,7),//6
+            array(6,7,8),//7
+            array(7,8,9),//8
+            array(9,9,9),//9
+        );
+    }
+    
 
     public function index(Request $request){
         // $location = $this->upload($request);
@@ -21,16 +39,22 @@ class MainController extends Controller
         // test data dengan cara diprint
         // $this->print($this->data);
 
+        $brokenLink = $this->webController->getBrokenLink();
+        $pageLoadTime = $this->webController->getPageLoadTime();
+        $sizeWeb = $this->webController->getSizeWeb();
+
         if($request->btn==1){
             print("FUZZY AHP");
             print("<br>");
-            $ahp = new FAHPController();
+            $ahp = new FAHPController($brokenLink, $pageLoadTime, $sizeWeb, $this->fuzzyNumber, $this->webController);
             // print_r($ahp);
 
 
             return redirect()->route('hasilAHP')->with(['result'=>$ahp]);
         }else{
             print("FUZZY TOPSIS");
+
+            $topsis = new FTOPSISController($brokenLink, $pageLoadTime, $sizeWeb, $this->fuzzyNumber, $this->webController);
         }
         
     }
