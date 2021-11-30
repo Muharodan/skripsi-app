@@ -25,7 +25,7 @@ class FTOPSISController extends Controller
             [2, 4, 3], //can1
             [3, 4, 2], //can2
             [4, 2, 1], //can3
-            [1, 2, 1], //can4 
+            [1, 2, 0], //can4 
         ];
 
         $data1=[
@@ -90,6 +90,7 @@ class FTOPSISController extends Controller
         $data = $this->normalizeDecisionMatrix($data, 1, 2, 1);//kolom 2
         $this->print($data);
         print("<br>");
+        print("Weight Normalize Decision Matrix <br>");
         $data = $this->weightedNormalize($data, $weightage);
         $this->print($data);
         print("<br>");
@@ -184,12 +185,16 @@ class FTOPSISController extends Controller
     private function normalizeDecisionMatrix($data, $mode, $idx, $v){
         for($i = 0; $i<count($data); $i++){
             // for($j = 0; $j<count($data[$i]); $j++){
+                $temp = [];
                 for($k =0; $k<3; $k++){
                     if($mode==0){//benefit criteria
-                        $data[$i][$idx][$k] = $data[$i][$idx][$k]/$v;//4 angka dibelakang koma
+                        $data[$i][$idx][$k] = $data[$i][$idx][$k]/$v;
                     }else{// cost criteria
-                        $data[$i][$idx][$k] = $v/$data[$i][$idx][$k];
+                        array_push($temp, $v/$data[$i][$idx][2-$k]);
                     }
+                }
+                if($mode!=0){
+                    $data[$i][$idx]=$temp;
                 }
             // }
         }
@@ -224,21 +229,21 @@ class FTOPSISController extends Controller
         for($i = 0; $i<count($data); $i++){
             for($j = 0; $j<count($data[$i]); $j++){
                 // for($k =0; $k<3; $k++){
-                    // print("I: ".$i." J: ".$j." Data: ".$data[$i][$j][2]. " Max[".$j."]: ".$max[$j]);
-                    // print("<br>");
                     if($data[$i][$j][2] >= $max[$j]){
-                        $max[$j] = $data[$i][$j][2];
-                        $res[$j] = $data[$i][$j];
-                        if($data[$i][$j][1] >= $res[$j][1]){
+                        if($i==0){
+                            $max[$j] = $data[$i][$j][2];
                             $res[$j] = $data[$i][$j];
-                            if($data[$i][$j][0] >= $res[$j][0]){
+                        }else{
+                            if($data[$i][$j][1] >= $res[$j][1]){
                                 $res[$j] = $data[$i][$j];
+                                
+                                if($data[$i][$j][0] >= $res[$j][0]){
+                                    $res[$j] = $data[$i][$j];
+                                }
                             }
                         }
+                        
                     }
-                    // print("I: ".$i." J: ".$j." Data: ".$data[$i][$j][2]. " Max[".$j."]: ".$max[$j]);
-                    // print("<br>");
-                    // print("<br>");
                 // }
             }
         }
@@ -259,21 +264,21 @@ class FTOPSISController extends Controller
         for($i = 0; $i<count($data); $i++){
             for($j = 0; $j<count($data[$i]); $j++){
                 // for($k =0; $k<3; $k++){
-                    // print("I: ".$i." J: ".$j." Data: ".$data[$i][$j][2]. " Min[".$j."]: ".$max[$j]);
-                    // print("<br>");
                     if($data[$i][$j][2] <= $max[$j]){
-                        $max[$j] = $data[$i][$j][2];
-                        $res[$j] = $data[$i][$j];
-                        if($data[$i][$j][1] <= $res[$j][1]){
+                        if($i==0){
+                            $max[$j] = $data[$i][$j][2];
                             $res[$j] = $data[$i][$j];
-                            if($data[$i][$j][0] <= $res[$j][0]){
+                        }else{
+                            if($data[$i][$j][1] <= $res[$j][1]){
                                 $res[$j] = $data[$i][$j];
+                                if($data[$i][$j][0] <= $res[$j][0]){
+                                    $res[$j] = $data[$i][$j];
+                                }
                             }
                         }
+                        
+                        
                     }
-                    // print("I: ".$i." J: ".$j." Data: ".$data[$i][$j][2]. " Min[".$j."]: ".$max[$j]);
-                    // print("<br>");
-                    // print("<br>");
                 // }
             }
         }
