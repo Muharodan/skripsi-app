@@ -19,11 +19,11 @@ Route::get('/', function () {
 })->name('index');
 
 Route::get('/hasilAHP', [MainController::class, 'check'])->name('hasilAHP');
-Route::get('/hasilTOPSIS', [MainController::class, 'check'])->name('hasilTOPSIS');
+// Route::get('/hasilTOPSIS', [MainController::class, 'check'])->name('hasilTOPSIS');
 
-// Route::get('/hasilTOPSIS', function () {
-//     return view('hasilTOPSIS');
-// });
+Route::get('/hasilTOPSIS', function () {
+    return view('hasilTOPSIS');
+});
 
 Route::get('/home', function () {
     return view('home');

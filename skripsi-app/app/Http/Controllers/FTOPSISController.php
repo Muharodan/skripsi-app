@@ -66,12 +66,12 @@ class FTOPSISController extends Controller
         $data = $webController->getAll();
         //bl, pl, s
         $data = $this->convertToArray2D($data);
-        // print("<br>DATA");
-        // $this->print($data);    
+        print("<br>DATA Convert ke Array 2D");
+        $this->print($data);    
 
         $data = $this->changeToFuzzyNumber($data, $fuzzyNumber);
-        // print("<br>DATA");
-        // $this->print($data);
+        print("<br>DATA Convert ke Fuzzy Number");
+        $this->print($data);
 
         $weightage = [
             [5, 5, 3],
@@ -79,7 +79,7 @@ class FTOPSISController extends Controller
 
         // print("Weightage");
         $weightage = $this->changeToFuzzyNumber($weightage, $fuzzyNumber);
-        // $this->print($weightage);
+        $this->print($weightage);
 
         // print("<br>");
         // $benefitCriteria = $this->benefitCriteria($data, 0);
@@ -97,27 +97,42 @@ class FTOPSISController extends Controller
         // print_r($costCriteria);
         // print("<br>");
 
+        $costCriteria = $this->costCriteria($data, 0);
+        print("Cost Criteria idx 0: ");
+        print_r($costCriteria);
+        print("<br>");
+
+        $costCriteria = $this->costCriteria($data, 1);
+        print("Cost Criteria idx 1: ");
+        print_r($costCriteria);
+        print("<br>");
+
+        $costCriteria = $this->costCriteria($data, 2);
+        print("Cost Criteria idx 2: ");
+        print_r($costCriteria);
+        print("<br>");
+
         // nanti simpen di array, biar bisa di loops (data, mode, idx, value)
         print("Normalize Decision Matrix <br>");
         $data = $this->normalizeDecisionMatrix($data, 1, 0, $this->costCriteria($data,0));//kolom 1
         $data = $this->normalizeDecisionMatrix($data, 1, 1, $this->costCriteria($data,1));//kolom 2
         $data = $this->normalizeDecisionMatrix($data, 1, 2, $this->costCriteria($data,2));//kolom 2
-        // $this->print($data);
-        // print("<br>");
-        // print("Weight Normalize Decision Matrix <br>");
+        $this->print($data);
+        print("<br>");
+        print("Weight Normalize Decision Matrix <br>");
         $data = $this->weightedNormalize($data, $weightage);
-        // $this->print($data);
-        // print("<br>");
+        $this->print($data);
+        print("<br>");
 
         $fpis=$this->FPIS($data);
-        // print("FPIS");
-        // $this->print($fpis);
-        // print("<br>");
+        print("FPIS");
+        $this->print($fpis);
+        print("<br>");
 
         $fnis=$this->FNIS($data);
-        // print("FNIS");
-        // $this->print($fnis);
-        // print("<br>");
+        print("FNIS");
+        $this->print($fnis);
+        print("<br>");
 
         $cc = $this->closenessCoefficient($fpis, $fnis);
         $res=[];
@@ -143,8 +158,8 @@ class FTOPSISController extends Controller
             // print_r($this->result[$id]);
             // print("<br>");
         }
-
-        // $this->print($result);
+        print("HASIL PERHITUNGAN");
+        $this->print($this->result);
         return $this->result;
     }
 
