@@ -6,104 +6,118 @@ use Illuminate\Http\Request;
 
 class FTOPSISController extends Controller
 {
-    //
-    function __construct($brokenLink, $pageLoadTime, $sizeWeb, $fuzzyNumber, $webController)
+    public $result;
+
+    function __construct($fuzzyNumber, $webController)
     {
-        $fuzzyNumber = [
-            [1,1,3], // very low, 0
-            [1,3,5], // low, 1
-            [3,5,7], // average, 2
-            [5,7,9], // high, 3
-            [7,9,9], // very high, 4
-        ];
+        // $fuzzyNumber = [
+        //     [1,1,3], // very low, 0
+        //     [1,3,5], // low, 1
+        //     [3,5,7], // average, 2
+        //     [5,7,9], // high, 3
+        //     [7,9,9], // very high, 4
+        // ];
+
+        // $weightage = [
+        //     [3, 4, 2],
+        // ];
+
+        // $data=[
+        //     [2, 4, 3], //can1
+        //     [3, 4, 2], //can2
+        //     [4, 2, 1], //can3
+        //     [1, 2, 0], //can4 
+        // ];
+
+        // $data1=[
+        //     [3, 4, 3], //can1
+        //     [3, 3, 2], //can2
+        //     [4, 2, 0], //can3
+        //     [1, 2, 0], //can4 
+        // ];
+
+        // $data2=[
+        //     [2, 3, 3], //can1
+        //     [3, 2, 2], //can2
+        //     [3, 2, 1], //can3
+        //     [0, 1, 0], //can4 
+        // ];
+
+        // print("DATA 0");
+        // $data = $this->changeToFuzzyNumber($data, $fuzzyNumber);
+        // $this->print($data);
+        // print("<br>");
+
+        // print("DATA 1");
+        // $data1 = $this->changeToFuzzyNumber($data1, $fuzzyNumber);
+        // $this->print($data1);
+        // print("<br>");
+
+        // print("DATA 2");
+        // $data2 = $this->changeToFuzzyNumber($data2, $fuzzyNumber);
+        // $this->print($data2);
+        // print("<br>");
+
+        // print("COMBINE DATA");
+        // $data = $this->combine($data, $data1, $data2);
+        // $this->print($data);
+        // print("<br>");
+
+        $data = $webController->getAll();
+        //bl, pl, s
+        $data = $this->convertToArray2D($data);
+        // print("<br>DATA");
+        // $this->print($data);    
+
+        $data = $this->changeToFuzzyNumber($data, $fuzzyNumber);
+        // print("<br>DATA");
+        // $this->print($data);
 
         $weightage = [
-            [3, 4, 2],
+            [5, 5, 3],
         ];
 
-        $data=[
-            [2, 4, 3], //can1
-            [3, 4, 2], //can2
-            [4, 2, 1], //can3
-            [1, 2, 0], //can4 
-        ];
-
-        $data1=[
-            [3, 4, 3], //can1
-            [3, 3, 2], //can2
-            [4, 2, 0], //can3
-            [1, 2, 0], //can4 
-        ];
-
-        $data2=[
-            [2, 3, 3], //can1
-            [3, 2, 2], //can2
-            [3, 2, 1], //can3
-            [0, 1, 0], //can4 
-        ];
-
-        print("DATA 0");
-        $data = $this->changeToFuzzyNumber($data, $fuzzyNumber);
-        $this->print($data);
-        print("<br>");
-
-        print("DATA 1");
-        $data1 = $this->changeToFuzzyNumber($data1, $fuzzyNumber);
-        $this->print($data1);
-        print("<br>");
-
-        print("DATA 2");
-        $data2 = $this->changeToFuzzyNumber($data2, $fuzzyNumber);
-        $this->print($data2);
-        print("<br>");
-
-        print("COMBINE DATA");
-        $data = $this->combine($data, $data1, $data2);
-        $this->print($data);
-        print("<br>");
-
-
-        print("Weightage");
+        // print("Weightage");
         $weightage = $this->changeToFuzzyNumber($weightage, $fuzzyNumber);
-        $this->print($weightage);
+        // $this->print($weightage);
 
-        print("<br>");
-        $benefitCriteria = $this->benefitCriteria($data, 0);
-        print("Benefit Criteria idx 0: ");
-        print_r($benefitCriteria);
-        print("<br>");
+        // print("<br>");
+        // $benefitCriteria = $this->benefitCriteria($data, 0);
+        // print("Benefit Criteria idx 0: ");
+        // print_r($benefitCriteria);
+        // print("<br>");
 
-        $benefitCriteria = $this->benefitCriteria($data, 1);
-        print("Benefit Criteria idx 1: ");
-        print_r($benefitCriteria);
-        print("<br>");
+        // $benefitCriteria = $this->benefitCriteria($data, 1);
+        // print("Benefit Criteria idx 1: ");
+        // print_r($benefitCriteria);
+        // print("<br>");
 
-        $costCriteria = $this->costCriteria($data, 2);
-        print("Cost Criteria idx 2: ");
-        print_r($costCriteria);
-        print("<br>");
+        // $costCriteria = $this->costCriteria($data, 2);
+        // print("Cost Criteria idx 2: ");
+        // print_r($costCriteria);
+        // print("<br>");
 
         // nanti simpen di array, biar bisa di loops (data, mode, idx, value)
         print("Normalize Decision Matrix <br>");
-        $data = $this->normalizeDecisionMatrix($data, 0, 0, 9);//kolom 1
-        $data = $this->normalizeDecisionMatrix($data, 0, 1, 9);//kolom 2
-        $data = $this->normalizeDecisionMatrix($data, 1, 2, 1);//kolom 2
-        $this->print($data);
-        print("<br>");
-        print("Weight Normalize Decision Matrix <br>");
+        $data = $this->normalizeDecisionMatrix($data, 1, 0, $this->costCriteria($data,0));//kolom 1
+        $data = $this->normalizeDecisionMatrix($data, 1, 1, $this->costCriteria($data,1));//kolom 2
+        $data = $this->normalizeDecisionMatrix($data, 1, 2, $this->costCriteria($data,2));//kolom 2
+        // $this->print($data);
+        // print("<br>");
+        // print("Weight Normalize Decision Matrix <br>");
         $data = $this->weightedNormalize($data, $weightage);
-        $this->print($data);
-        print("<br>");
+        // $this->print($data);
+        // print("<br>");
 
         $fpis=$this->FPIS($data);
-        print("FPIS");
-        $this->print($fpis);
-        print("<br>");
+        // print("FPIS");
+        // $this->print($fpis);
+        // print("<br>");
 
         $fnis=$this->FNIS($data);
-        print("FNIS");
-        $this->print($fnis);
-        print("<br>");
+        // print("FNIS");
+        // $this->print($fnis);
+        // print("<br>");
 
         $cc = $this->closenessCoefficient($fpis, $fnis);
         $res=[];
@@ -112,7 +126,90 @@ class FTOPSISController extends Controller
         }
 
         arsort($res);
-        print_r($res);
+        // print_r($res);
+
+        $this->result=[];
+        $keys=array_keys($res);
+        foreach($keys as $k){
+            $id = substr($k, 3)*1;
+            $data = $webController->find($id);
+            $this->result[$id]=[];
+            array_push($this->result[$id], $data->nama_web);
+            array_push($this->result[$id], $data->broken_link);
+            array_push($this->result[$id], $data->page_load_time);
+            array_push($this->result[$id], $data->size_web);
+            // print($id);
+            // print("<br>");
+            // print_r($this->result[$id]);
+            // print("<br>");
+        }
+
+        // $this->print($result);
+        return $this->result;
+    }
+
+    private function convertLoadTime($value){
+            $x = $value/1000;
+            // grafik baru
+            if($x>=0 && $x<=2.5){ // sangat baik
+                return 1;
+            }else if($x>2.5 && $x<=3.5){ // baik
+                return 2;
+            }else if($x>3.5 && $x<=4.5){ // cukup
+                return 3;
+            }else if($x>4.5 && $x<=5.5){ // kurang
+                return 4;
+            }else if($x>5.5){ //  sangat kurang
+                return 5;
+            }
+            
+            // grafik lama
+            // $temp = $data[$i]/1000;
+            // if($temp>=0 && $temp<=2)array_push($result, 1); // baik
+            // else if($temp>2 && $temp<=3)array_push($result, 2); // antara baik dan cukup
+            // else if($temp>3 && $temp<=5)array_push($result, 3); // cukup
+            // else if($temp>5 && $temp<=6)array_push($result, 4); // antara cukup dan kurang
+            // else array_push($result, 5); // kurang 
+    }
+
+    private function convertSize($value){
+            //grafik baru
+            $x = $value;
+            if($x>=0 && $x<=22000){ // sangat baik
+                return 1;
+            }else if($x>22000 && $x<=40000){ // baik
+                return 2;
+            }else if($x>40000 && $x<=56000){ // cukup
+                return 3;
+            }else if($x>56000 && $x<=72000){ // kurang
+                return 4;
+            }else if($x>72000){ //  sangat kurang
+                return 5;
+            }
+            // grafik lama
+            // $temp = $data[$i];
+            // if($temp>=0 && $temp<=32000)array_push($result, 1); // baik
+            // else if($temp>32000 && $temp<=33000)array_push($result, 2); // antara baik dan cukup
+            // else if($temp>33000 && $temp<=64000)array_push($result, 3); // cukup
+            // else if($temp>64000 && $temp<=65000)array_push($result, 4); // antara cukup dan kurang
+            // else array_push($result, 5); // kurang 
+    }
+
+    private function convertBrokenLink($value){
+   
+            $x = $value;
+            if($x>=0 && $x<=37.5){ // sangat baik
+                return 1;
+            }else if($x>37.5 && $x<=52.5){ // baik
+                return 2;
+            }else if($x>52.5 && $x<=77.5){ // cukup
+                return 3;
+            }else if($x>77.5 && $x<=125){ // kurang
+                return 4;
+            }else if($x>125){ //  sangat kurang
+                return 5;
+            }
+        
     }
 
     private function combine($data, $data1, $data2){
@@ -131,10 +228,23 @@ class FTOPSISController extends Controller
         return $data;
     }
 
+    private function convertToArray2D($data){
+        $result=[];
+        $i = 0;
+        foreach($data as $d){
+            $result[$i]=[];
+            array_push($result[$i], $this->convertBrokenLink($d->broken_link));
+            array_push($result[$i], $this->convertLoadTime($d->page_load_time));
+            array_push($result[$i], $this->convertSize($d->size_web));
+            $i++;
+        }
+        return $result;
+    }
+
     private function changeToFuzzyNumber($data, $fuzzyNumber){
         for($i = 0; $i<count($data); $i++){
             for($j =0; $j<count($data[$i]); $j++){
-                $v = $data[$i][$j];
+                $v = $data[$i][$j]-1;
                 $data[$i][$j]=$fuzzyNumber[$v];
             }
         }

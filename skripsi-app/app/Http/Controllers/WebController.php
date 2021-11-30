@@ -30,6 +30,13 @@ class WebController extends Controller
         ");
     }
 
+    public function getAll(){
+        return DB::select("
+            select broken_link, page_load_time, size_web
+            from webs
+        ");
+    }
+
     public function find($id){
         return DB::table('webs')->find($id+1);
         

@@ -46,22 +46,31 @@ class MainController extends Controller
         if($request->btn==1){
             print("FUZZY AHP");
             print("<br>");
-            $ahp = new FAHPController($brokenLink, $pageLoadTime, $sizeWeb, $this->fuzzyNumber, $this->webController);
+            $ahp = new FAHPController($this->fuzzyNumber, $this->webController);
             // print_r($ahp);
 
 
-            return redirect()->route('hasilAHP')->with(['result'=>$ahp]);
+            return redirect()->route('hasilAHP')->with(['result'=>$ahp, "mode">=0]);
         }else{
             print("FUZZY TOPSIS");
 
-            $topsis = new FTOPSISController($brokenLink, $pageLoadTime, $sizeWeb, $this->fuzzyNumber, $this->webController);
+            $topsis = new FTOPSISController($this->fuzzyNumber, $this->webController);
+            print_r($topsis);
+
+            return redirect()->route('hasilTOPSIS')->with(['result'=>$topsis, 'mode'=>1]);
         }
         
     }
 
     public function check(){
         if(Session::get('result')!=null){
-            return view('/hasilAHP');
+            if(Session::get('mode')==0){
+                return view('/hasilAHP');
+            }else{
+                // print_r(Session::get('result'));
+                return view('/hasilTOPSIS');
+            }
+            
             // print_r(Session::get('result'));
         }else{
             return redirect()->route('index');
