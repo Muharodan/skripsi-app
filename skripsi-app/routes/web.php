@@ -19,14 +19,18 @@ use Illuminate\Support\Facades\Route;
 //     return view('home');
 // })->name('index');
 
-Route::get('/', [WebController::class, 'index']);
+Route::get('/', [WebController::class, 'index'])->name('index');
 
 Route::get('/hasilAHP', [MainController::class, 'check'])->name('hasilAHP');
-// Route::get('/hasilTOPSIS', [MainController::class, 'check'])->name('hasilTOPSIS');
+Route::get('/hasilTOPSIS', [MainController::class, 'check'])->name('hasilTOPSIS');
 
-Route::get('/hasilTOPSIS', function () {
-    return view('hasilTOPSIS');
-});
+// Route::get('/hasilTOPSIS', function () {
+//     return view('hasilTOPSIS');
+// });
+
+// Route::get('/hasilAHP', function () {
+//     return view('hasilTOPSIS');
+// });
 
 Route::get('/home', function () {
     return view('home');

@@ -79,7 +79,7 @@
   </table>
 
   <br>
-  <a class="fuzzyahp" href="/home">
+  <a class="fuzzyahp" href="/">
     <button class="btn btn-primary" name="home">home</button>
   </a>
 </body>

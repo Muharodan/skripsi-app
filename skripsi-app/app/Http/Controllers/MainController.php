@@ -57,7 +57,7 @@ class MainController extends Controller
             $topsis = new FTOPSISController($this->fuzzyNumber, $this->webController);
             // print_r($topsis);
 
-            // return redirect()->route('hasilTOPSIS')->with(['result'=>$topsis, 'mode'=>1]);
+            return redirect()->route('hasilTOPSIS')->with(['result'=>$topsis, 'mode'=>1]);
         }
         
     }
