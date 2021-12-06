@@ -9,6 +9,12 @@ class WebController extends Controller
 {
     //
 
+    public function index(){
+        $listWeb = DB::table('webs')->get();
+
+        return view('home', ['listWeb'=>$listWeb]);
+    }
+
     public function getBrokenLink(){
         return DB::select("
             select broken_link

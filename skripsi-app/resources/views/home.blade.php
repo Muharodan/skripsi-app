@@ -27,7 +27,16 @@
       </tr>
     </thead>
     <tbody>
+      @foreach ($listWeb as $list)
       <tr>
+        <td>{{ $list->nama_web}}</td>
+        <td>{{ $list->broken_link}}</td>
+        <td>{{ $list->page_load_time}}</td>
+        <td>{{ $list->size_web}}</td>
+      </tr>
+      @endforeach
+
+      <!-- <tr>
         <th scope="row">Google</th>
         <td>0.102 Seconds</td>
         <td>16020 Bytes</td>
@@ -56,7 +65,7 @@
         <td>0.82 seconds</td>
         <td>70443</td>
         <td>2</td>
-      </tr>
+      </tr> -->
     </tbody>
   </table>
 

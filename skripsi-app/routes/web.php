@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\WebController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('index');
+// Route::get('/', function () {
+//     return view('home');
+// })->name('index');
+
+Route::get('/', [WebController::class, 'index']);
 
 Route::get('/hasilAHP', [MainController::class, 'check'])->name('hasilAHP');
 // Route::get('/hasilTOPSIS', [MainController::class, 'check'])->name('hasilTOPSIS');
