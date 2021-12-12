@@ -10,7 +10,7 @@ class WebController extends Controller
     //
 
     public function index(){
-        $listWeb = DB::table('webs')->get();
+        $listWeb = DB::table('webs')->paginate(10);
 
         return view('home', ['listWeb'=>$listWeb]);
     }

@@ -15,7 +15,6 @@
 
 <body>
   <h1>HASIL FUZZY AHP</h1>
-  <h2>ini contoh hasil tanpa perhitungan berdasarkan load time</h2>
 
   <table class="table table-striped">
     <!-- <thead> -->

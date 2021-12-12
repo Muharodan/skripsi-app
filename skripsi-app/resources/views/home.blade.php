@@ -7,7 +7,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Document</title>
+  <title>Penilaian Website Secara Automatis</title>
+  <style type="text/css">
+    .buttons {
+    }
+  </style>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
@@ -68,28 +72,31 @@
       </tr> -->
     </tbody>
   </table>
+    {{$listWeb->links()}}
 
   <div class="buttons">
-    <a class="upload" >
-    <form action="{{url('/process')}}" method="post" enctype="multipart/form-data">
-      @csrf
+    <a class="upload">
+      <form action="{{url('/process')}}" method="post" enctype="multipart/form-data">
+        @csrf
 
-      <!-- Select excel file to upload
+        <!-- Select excel file to upload
       <br>
 
       <input type="file" name="file">
       <br>
       <br> -->
 
-      <a class="fuzzyahp">
-        <button class="btn btn-primary" name="btn" id="ahp" type="submit" value="1">Fuzzy AHP</button>
-      </a>
-      
-      <a class="fuzzytopsis">
-        <button class="btn btn-primary" name="btn" id="topsis" type="submit" value="2">Fuzzy topsis</button>
-      </a>
-    </form>
-  </a>  
+        <a class="fuzzyahp">
+          <button class="btn btn-primary" name="btn" id="ahp" type="submit" value="1">Fuzzy AHP</button>
+        </a>
+
+        <a class="fuzzytopsis">
+          <button class="btn btn-primary" name="btn" id="topsis" type="submit" value="2">Fuzzy topsis</button>
+        </a>
+
+
+      </form>
+    </a>
     <!-- <br>
     <a class="fuzzyahp" href="/hasilAHP">
       <button class="btn btn-primary" name="fuzzy ahp">fuzzy ahp</button>

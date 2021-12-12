@@ -1,10 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
-class FAHPController extends Controller{
+class FAHPController extends Controller
+{
 
     public $result;
 
@@ -14,11 +18,12 @@ class FAHPController extends Controller{
         // broken_link idx 0
         // page_load_time idx 1
         // size_web idx 2
+        // Data Kriteria
         $DK = array(
             //Sidik
-            array(1,2/1,4/1),
-            array(1/2,1,3/1),
-            array(1/4,1/3,1),
+            array(1, 2 / 1, 4 / 1),
+            array(1 / 2, 1, 3 / 1),
+            array(1 / 4, 1 / 3, 1),
 
             //Youtube
             // array(1,5,4,7),
@@ -36,7 +41,7 @@ class FAHPController extends Controller{
         // print("<br>GEOMETRIC MEAN<br>");
         //bacanya atas ke bawah
         $GMK = $this->calculateGeomecricMean($DK);
-        $this->print($GMK);
+        // $this->print($GMK);
 
         // print("<br>Fuzzy Weight Value <br>");
         $FWK = $this->calculateFuzzyWeight($GMK);
@@ -50,11 +55,11 @@ class FAHPController extends Controller{
         // google, facebook, amazon, imdb (dalam bytes)
         // $DBL = [0, 40, 75, 28];
         $DBL = $webController->getBrokenLink();
-        $DBL = $this->convertToArray2D($DBL,0);
+        $DBL = $this->convertToArray2D($DBL, 0);
         // print("<br><br> Data Broken Link<br>");
         // print_r($DBL);
         // print("<br>");
-        
+
         // convert arr to pairwise comparision
         $DBL = $this->convertBrokenLink($DBL);
         // print("<br> Data Broken Link setelah di convert<br>");
@@ -98,11 +103,11 @@ class FAHPController extends Controller{
         // LOAD TIME
         // $data = [105, 651, 051, 2046];
         $DPLT = $webController->getPageLoadTime();
-        $DPLT = $this->convertToArray2D($DPLT,1);
+        $DPLT = $this->convertToArray2D($DPLT, 1);
         // print("<br><br> Data Load Time (dalam ms)<br>");
         // print_r($DPLT);
         // print("<br>");
-        
+
         // convert arr to pairwise comparision
         $DPLT = $this->convertLoadTime($DPLT);
         // print("<br> Data Load Time Setelah di convert<br>");
@@ -140,7 +145,7 @@ class FAHPController extends Controller{
         // print("<br><br> Data Size (dalam bytes)<br>");
         // print_r($DSW);
         // print("<br>");
-        
+
         // convert arr to pairwise comparision
         $DSW = $this->convertSize($DSW);
         // print("<br> Data Size setelah di convert<br>");
@@ -186,9 +191,9 @@ class FAHPController extends Controller{
         // print("Index min: ".$min[0]. " dengan nilai: ".$result[$min[0]]." Pada web : ");
         // print_r($this->webController->find($min[0]));
 
-        $res=[];
-        for($i=0;$i<count($result);$i++){
-            $res["id-".($i)]=$result[$i];
+        $res = [];
+        for ($i = 0; $i < count($result); $i++) {
+            $res["id-" . ($i)] = $result[$i];
         }
 
         // print("<br>");
@@ -197,12 +202,12 @@ class FAHPController extends Controller{
         // print_r($res);
 
         // print("<br>");
-        $this->result=[];
-        $keys=array_keys($res);
-        foreach($keys as $k){
-            $id = substr($k, 3)*1;
+        $this->result = [];
+        $keys = array_keys($res);
+        foreach ($keys as $k) {
+            $id = substr($k, 3) * 1;
             $data = $webController->find($id);
-            $this->result[$id]=[];
+            $this->result[$id] = [];
             array_push($this->result[$id], $data->nama_web);
             array_push($this->result[$id], $data->broken_link);
             array_push($this->result[$id], $data->page_load_time);
@@ -216,73 +221,77 @@ class FAHPController extends Controller{
         // $this->result=$res;
 
         return $this->result;
-       
     }
 
-    private function convertToArray2D($data, $mode){
-        $result=[];
-        foreach($data as $d){
-            if($mode==0){ //broken_link
+    private function convertToArray2D($data, $mode)
+    {
+        $result = [];
+        foreach ($data as $d) {
+            if ($mode == 0) { //broken_link
                 array_push($result, $d->broken_link);
-            }else if($mode==1){ //page_load_time
+            } else if ($mode == 1) { //page_load_time
                 array_push($result, $d->page_load_time);
-            }else { // size_web
+            } else { // size_web
                 array_push($result, $d->size_web);
             }
         }
         return $result;
     }
 
-    private function calculateResult($kriteria, $brokenlink, $loadTime, $headerSize){
+    private function calculateResult($kriteria, $brokenlink, $loadTime, $headerSize)
+    {
         $arr = [];
-        for($i = 0; $i <count($kriteria);$i++){
-            $arrt[$i]=[];
-            for($j = 0; $j<count($brokenlink);$j++){
-                $arr[$i][$j]=[];
-                if($i==0){ //broken link
-                    array_push($arr[$i][$j],$kriteria[$i]*$brokenlink[$j]);
-                }else if($i==1){ //load time
-                    array_push($arr[$i][$j],$kriteria[$i]*$loadTime[$j]);
-                }else{ // header size
-                    array_push($arr[$i][$j],$kriteria[$i]*$headerSize[$j]);
+        for ($i = 0; $i < count($kriteria); $i++) {
+            $arrt[$i] = [];
+            for ($j = 0; $j < count($brokenlink); $j++) {
+                $arr[$i][$j] = [];
+                if ($i == 0) { //broken link
+                    array_push($arr[$i][$j], $kriteria[$i] * $brokenlink[$j]);
+                } else if ($i == 1) { //load time
+                    array_push($arr[$i][$j], $kriteria[$i] * $loadTime[$j]);
+                } else { // header size
+                    array_push($arr[$i][$j], $kriteria[$i] * $headerSize[$j]);
                 }
             }
         }
 
         // print_r($arr);
         print("<br>");
-        $result=[];
+        $result = [];
         // sum
-        for($i=0;$i<count($arr);$i++){
-            for($j=0;$j<count($arr[$i]);$j++){
-                if(empty($result[$j])){
-                    $result[$j]=$arr[$i][$j][0];
-                }else{
-                    $result[$j]+=$arr[$i][$j][0];
-                } 
+        for ($i = 0; $i < count($arr); $i++) {
+            for ($j = 0; $j < count($arr[$i]); $j++) {
+                if (empty($result[$j])) {
+                    $result[$j] = $arr[$i][$j][0];
+                } else {
+                    $result[$j] += $arr[$i][$j][0];
+                }
             }
         }
+
+
         return $result;
     }
 
-    private function convertLoadTime($data){
-        $result=[];
-        
-        for($i = 0; $i<count($data); $i++){
-            $x = $data[$i]/1000;
+    private function convertLoadTime($data)
+    {
+        $result = [];
+
+        for ($i = 0; $i < count($data); $i++) {
+            $x = $data[$i] / 1000;
             // grafik baru
-            if($x>=0 && $x<=2.5){ // sangat baik
+            if ($x >= 0 && $x <= 2.5) { // sangat baik
                 array_push($result, 1);
-            }else if($x>2.5 && $x<=3.5){ // baik
+            } else if ($x > 2.5 && $x <= 3.5) { // baik
                 array_push($result, 2);
-            }else if($x>3.5 && $x<=4.5){ // cukup
+            } else if ($x > 3.5 && $x <= 4.5) { // cukup
                 array_push($result, 3);
-            }else if($x>4.5 && $x<=5.5){ // kurang
+            } else if ($x > 4.5 && $x <= 5.5) { // kurang
                 array_push($result, 4);
-            }else if($x>5.5){ //  sangat kurang
+            } else if ($x > 5.5) { //  sangat kurang
                 array_push($result, 5);
             }
-            
+
             // grafik lama
             // $temp = $data[$i]/1000;
             // if($temp>=0 && $temp<=2)array_push($result, 1); // baik
@@ -295,21 +304,22 @@ class FAHPController extends Controller{
         return $result;
     }
 
-    private function convertSize($data){
-        $result=[];
-        
-        for($i = 0; $i<count($data); $i++){
+    private function convertSize($data)
+    {
+        $result = [];
+
+        for ($i = 0; $i < count($data); $i++) {
             //grafik baru
             $x = $data[$i];
-            if($x>=0 && $x<=22000){ // sangat baik
+            if ($x >= 0 && $x <= 22000) { // sangat baik
                 array_push($result, 1);
-            }else if($x>22000 && $x<=40000){ // baik
+            } else if ($x > 22000 && $x <= 40000) { // baik
                 array_push($result, 2);
-            }else if($x>40000 && $x<=56000){ // cukup
+            } else if ($x > 40000 && $x <= 56000) { // cukup
                 array_push($result, 3);
-            }else if($x>56000 && $x<=72000){ // kurang
+            } else if ($x > 56000 && $x <= 72000) { // kurang
                 array_push($result, 4);
-            }else if($x>72000){ //  sangat kurang
+            } else if ($x > 72000) { //  sangat kurang
                 array_push($result, 5);
             }
             // grafik lama
@@ -324,56 +334,57 @@ class FAHPController extends Controller{
         return $result;
     }
 
-    private function convertBrokenLink($data){
-        $result=[];
-        
-        for($i = 0; $i<count($data); $i++){
+    private function convertBrokenLink($data)
+    {
+        $result = [];
+
+        for ($i = 0; $i < count($data); $i++) {
             //grafik baru
             $x = $data[$i];
-            if($x>=0 && $x<=37.5){ // sangat baik
+            if ($x >= 0 && $x <= 37.5) { // sangat baik
                 array_push($result, 1);
-            }else if($x>37.5 && $x<=52.5){ // baik
+            } else if ($x > 37.5 && $x <= 52.5) { // baik
                 array_push($result, 2);
-            }else if($x>52.5 && $x<=77.5){ // cukup
+            } else if ($x > 52.5 && $x <= 77.5) { // cukup
                 array_push($result, 3);
-            }else if($x>77.5 && $x<=125){ // kurang
+            } else if ($x > 77.5 && $x <= 125) { // kurang
                 array_push($result, 4);
-            }else if($x>125){ //  sangat kurang
+            } else if ($x > 125) { //  sangat kurang
                 array_push($result, 5);
             }
         }
         return $result;
     }
-    
-    private function pairwiseComparison($data){
-        $result=[];
-        for($i = 0; $i<count($data); $i++){
-            $result[$i]=[];
+
+    private function pairwiseComparison($data)
+    {
+        $result = [];
+        for ($i = 0; $i < count($data); $i++) {
+            $result[$i] = [];
         }
-        for($i = 0; $i<count($data); $i++){
-            
-            for($j = $i; $j<count($data); $j++){
-                if(empty($result[$i][$j])){
-                    $result[$i][$j]=[];
+        for ($i = 0; $i < count($data); $i++) {
+
+            for ($j = $i; $j < count($data); $j++) {
+                if (empty($result[$i][$j])) {
+                    $result[$i][$j] = [];
                 }
-                if(empty($result[$j][$i])){
-                    $result[$j][$i]=[];
+                if (empty($result[$j][$i])) {
+                    $result[$j][$i] = [];
                 }
-                if($data[$i]==$data[$j]){ // jika di kategori yang sama atau index yang sama
-                    $result[$i][$j]=1;
-                    $result[$j][$i]=1;
-                }else{
-                    $temp = $data[$i]-$data[$j];
-                    if($temp<0){ // jika nilai convert kolom lebih besar dari baris
-                        $temp = abs($temp)+1;
-                        $result[$i][$j]=$temp;
-                        $result[$j][$i]=1/$temp;
-                    }else{
-                        $temp = abs($temp)+1;
-                        $result[$i][$j]=1/$temp;
-                        $result[$j][$i]=$temp;
+                if ($data[$i] == $data[$j]) { // jika di kategori yang sama atau index yang sama
+                    $result[$i][$j] = 1;
+                    $result[$j][$i] = 1;
+                } else {
+                    $temp = $data[$i] - $data[$j];
+                    if ($temp < 0) { // jika nilai convert kolom lebih besar dari baris
+                        $temp = abs($temp) + 1;
+                        $result[$i][$j] = $temp;
+                        $result[$j][$i] = 1 / $temp;
+                    } else {
+                        $temp = abs($temp) + 1;
+                        $result[$i][$j] = 1 / $temp;
+                        $result[$j][$i] = $temp;
                     }
-                    
                 }
             }
         }
@@ -382,14 +393,15 @@ class FAHPController extends Controller{
 
 
 
-    private function print($matrix){
+    private function print($matrix)
+    {
         $size = count($matrix);
         print("<table style='border: 1px solid black;'>");
-        for($i=0;$i<$size;$i++){
+        for ($i = 0; $i < $size; $i++) {
             print("<tr style='border: 1px solid black;'>");
-            for($j=0;$j<count($matrix[$i]);$j++){
+            for ($j = 0; $j < count($matrix[$i]); $j++) {
                 print("<td style='border: 1px solid black;'>");
-                    print_r($matrix[$i][$j]);
+                print_r($matrix[$i][$j]);
                 print("</td>");
             }
             print("<tr>");
@@ -397,28 +409,29 @@ class FAHPController extends Controller{
         print("</table>");
     }
 
-    private function changeToFuzzyNumber($matrix, $fuzzyNumber){
+    private function changeToFuzzyNumber($matrix, $fuzzyNumber)
+    {
         $size = count($matrix);
-        for($i=0;$i<$size;$i++){
-            for($j=0;$j<$size;$j++){
-                if($matrix[$i][$j]>=1){
-                    for($k=1;$k<=9;$k++){
-                        if($matrix[$i][$j]==$k){
-                            $matrix[$i][$j]=$fuzzyNumber[$k-1];
+        for ($i = 0; $i < $size; $i++) {
+            for ($j = 0; $j < $size; $j++) {
+                if ($matrix[$i][$j] >= 1) {
+                    for ($k = 1; $k <= 9; $k++) {
+                        if ($matrix[$i][$j] == $k) {
+                            $matrix[$i][$j] = $fuzzyNumber[$k - 1];
                             break;
                         }
                     }
-                }else{
-                    for($k=1;$k<=9;$k++){
-                        if(!is_array($matrix[$i][$j])){
-                            $temp = $matrix[$i][$j]*$k;
-                            if($temp==1){
+                } else {
+                    for ($k = 1; $k <= 9; $k++) {
+                        if (!is_array($matrix[$i][$j])) {
+                            $temp = $matrix[$i][$j] * $k;
+                            if ($temp == 1) {
                                 $arr = array(
-                                    1/$fuzzyNumber[$k-1][2],
-                                    1/$fuzzyNumber[$k-1][1],
-                                    1/$fuzzyNumber[$k-1][0],
+                                    1 / $fuzzyNumber[$k - 1][2],
+                                    1 / $fuzzyNumber[$k - 1][1],
+                                    1 / $fuzzyNumber[$k - 1][0],
                                 );
-                                $matrix[$i][$j]=$arr;
+                                $matrix[$i][$j] = $arr;
                                 break;
                             }
                         }
@@ -430,40 +443,40 @@ class FAHPController extends Controller{
         return $matrix;
     }
 
-    private function calculateGeomecricMean($matrix){
-        $size=count($matrix);
-        $temp=[];
-        $res=[];
-        for($i=0;$i<$size;$i++){
-            $res[$i]=[];
-            $temp[$i]=[];
+    private function calculateGeomecricMean($matrix)
+    {
+        $size = count($matrix);
+        $temp = [];
+        $res = [];
+        for ($i = 0; $i < $size; $i++) {
+            $res[$i] = [];
+            $temp[$i] = [];
         }
 
         // masukin nilai ke temp
         // dalam satu baris berisikan 
-        foreach($matrix as $row){
-            foreach($row as $col){
+        foreach ($matrix as $row) {
+            foreach ($row as $col) {
                 $i = 0;
-                foreach($col as $value){
+                foreach ($col as $value) {
                     array_push($temp[$i], $value);
                     $i++;
                 }
             }
         }
         // hitung geometric mean
-        foreach($temp as $row){
-            $i=0;
+        foreach ($temp as $row) {
+            $i = 0;
             $idx = 0;
-            $count=1;
-            foreach($row as $val){
+            $count = 1;
+            foreach ($row as $val) {
                 $idx++;
-                $count*=$val;
-                if($idx == $size){
-                    array_push($res[$i],pow($count, 1/$size));
-                    $idx=0;
+                $count *= $val;
+                if ($idx == $size) {
+                    array_push($res[$i], pow($count, 1 / $size));
+                    $idx = 0;
                     $i++;
-                    $count=1;
-                    
+                    $count = 1;
                 }
             }
         }
@@ -474,34 +487,35 @@ class FAHPController extends Controller{
      * Calculate Fuzzy Weight 
      * from Geometric Mean
      */
-    private function calculateFuzzyWeight($matrix){
-        $inverse=[];
+    private function calculateFuzzyWeight($matrix)
+    {
+        $inverse = [];
         $total = [];
 
         //calculate sum
-        $i=0;
-        foreach($matrix as $row){
-            $j=0;
-            foreach($row as $val){
-                if($i==0){
+        $i = 0;
+        foreach ($matrix as $row) {
+            $j = 0;
+            foreach ($row as $val) {
+                if ($i == 0) {
                     array_push($total, $val);
-                }else{
-                    $total[$j]+=$val;
+                } else {
+                    $total[$j] += $val;
                 }
-                
+
                 $j++;
             }
             $i++;
         }
         // inverse
-        for($i=0;$i<3;$i++){
-            array_push($inverse,1/$total[3-$i-1]); 
+        for ($i = 0; $i < 3; $i++) {
+            array_push($inverse, 1 / $total[3 - $i - 1]);
         }
 
         // fuzzy weight
-        for($i=0;$i<count($matrix);$i++){
-            for($j=0;$j<count($matrix[$i]);$j++){
-                $matrix[$i][$j]*=$inverse[$j];
+        for ($i = 0; $i < count($matrix); $i++) {
+            for ($j = 0; $j < count($matrix[$i]); $j++) {
+                $matrix[$i][$j] *= $inverse[$j];
             }
         }
 
@@ -512,26 +526,25 @@ class FAHPController extends Controller{
     /**
      * Normalize pairwise matrix
      */
-    private function calculateNormalize($matrix){
-        $res=[];
-        $sum=0;
-        foreach($matrix as $row){
-            $total=0;
-            foreach($row as $val){
-                $total+=$val;
+    private function calculateNormalize($matrix)
+    {
+        $res = [];
+        $sum = 0;
+        foreach ($matrix as $row) {
+            $total = 0;
+            foreach ($row as $val) {
+                $total += $val;
                 // print($val." Total: ".$total."<br>");
             }
-            array_push($res,$total/3);
-            $sum+=$total/3;
+            array_push($res, $total / 3);
+            $sum += $total / 3;
         }
-        
-        
-        for($i=0;$i<count($res);$i++){
-            $res[$i]/=$sum;
+
+
+        for ($i = 0; $i < count($res); $i++) {
+            $res[$i] /= $sum;
         }
 
         return $res;
     }
 }
-
-?>
