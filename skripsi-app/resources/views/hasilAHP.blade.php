@@ -17,28 +17,24 @@
   <h1>HASIL FUZZY AHP</h1>
 
   <table class="table table-striped">
-    <!-- <thead> -->
     <tr>
       <th scope="col">Alternatif\Kriteria</th>
       <th scope="col">Broken Link</th>
       <th scope="col">Page Load Time</th>
       <th scope="col">Size</th>
     </tr>
-    <!-- </thead> -->
-    <!-- <tbody> -->
+    @foreach($result as $row)
 
-
-    @foreach($result->result as $row)
     <tr>
       @foreach($row as $val)
       <td>{{$val}}</td>
       @endforeach
     </tr>
+
     @endforeach
-
-
-
   </table>
+  {{ $result->links() }}
+
 
   <br>
   <a class="fuzzyahp" href="/">

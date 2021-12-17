@@ -24,7 +24,7 @@ Route::get('/', [WebController::class, 'index'])->name('index');
 // Route::get('/hasilAHP', [MainController::class, 'check'])->name('hasilAHP');
 // Route::get('/hasilTOPSIS', [MainController::class, 'check'])->name('hasilTOPSIS');
 
-Route::get('/hasilAHP', [MainController::class, 'index']);
+Route::get('/hasil', [MainController::class, 'index']);
 // Route::get('/hasilTOPSIS', function () {
 //     return view('hasilTOPSIS');
 // });

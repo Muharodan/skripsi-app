@@ -6,7 +6,9 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Importer;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class MainController extends Controller
 {
@@ -43,20 +45,44 @@ class MainController extends Controller
 
         if($request->btn==1){
             $ahp = new FAHPController($this->fuzzyNumber, $this->webController);
+            $result=$ahp->result;
 
-            return view('hasilAHP',['result'=>$ahp]);
+            $result = $this->paginate($result);
+            return view('hasilAHP', ['result'=>$result]);
 
             // return redirect()->route('hasilAHP')->with(['result'=>$ahp, "mode">=0]);
         }else{
             // print("FUZZY TOPSIS");
 
             $topsis = new FTOPSISController($this->fuzzyNumber, $this->webController);
-            // print_r($topsis);
+            $result=$topsis->result;
+            // print_r($topsis->result);
+            $result = $this->paginate($result);
 
-            return view('hasilTOPSIS',['result'=>$topsis]);
+            return view('hasilTOPSIS',['result'=>$result]);
             // return redirect()->route('hasilTOPSIS')->with(['result'=>$topsis, 'mode'=>1]);
         }
         
+    }
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    public function paginate($items, $perPage = 10, $page = null, $options = [])
+    {
+        //current page
+        $page = (int) app('request')->get('page', $default = '0');
+        // buat menjadi collection
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+
+        //Create our paginator and pass it to the view
+        $paginatedResults = new LengthAwarePaginator($items->forPage($page, $perPage), count($items), $perPage);
+
+        $paginatedResults->setPath('hasil');
+
+        return $paginatedResults;
     }
 
     // public function check(){
