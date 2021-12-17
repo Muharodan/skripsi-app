@@ -28,7 +28,7 @@ class WebController extends Controller
 
         $tempController = new TempController();
         $tempController->delete();
-        
+
         return view('home', ['listWeb' => $listWeb, 'kategori' => $kategori]);
     }
 
@@ -39,64 +39,103 @@ class WebController extends Controller
         return view('compare', ['listWeb' => $listWeb]);
     }
 
-    public function getId()
+    public function getId($mode, $id1, $id2)
     {
-        if ($this->idKategori == 0) {
-            $data = Web::select('id')->get();
+        if ($mode == 0) {
+            if ($this->idKategori == 0) {
+                $data = Web::select('id')->get();
+            } else {
+                $data = Web::select('id')
+                    ->where('id_kategori', $this->idKategori)
+                    ->get();
+            }
         } else {
             $data = Web::select('id')
-                ->where('id_kategori', $this->idKategori)
+                ->where('id', $id1)
+                ->orWhere('id', $id2)
                 ->get();
         }
+
         return $data;
     }
 
-    public function getBrokenLink()
+    public function getBrokenLink($mode, $id1, $id2)
     {
-        if ($this->idKategori == 0) {
-            $data = Web::select('broken_link')->get();
+        if ($mode == 0) {
+            if ($this->idKategori == 0) {
+                $data = Web::select('broken_link')->get();
+            } else {
+                $data = Web::select('broken_link')
+                    ->where('id_kategori', $this->idKategori)
+                    ->get();
+            }
         } else {
             $data = Web::select('broken_link')
-                ->where('id_kategori', $this->idKategori)
+                ->where('id', $id1)
+                ->orWhere('id', $id2)
                 ->get();
         }
+
         return $data;
     }
 
-    public function getPageLoadTime()
+    public function getPageLoadTime($mode, $id1, $id2)
     {
-        // print( $this->idKategori);
-        if ($this->idKategori == 0) {
-            $data = Web::select('page_load_time')->get();
+        if ($mode == 0) {
+            if ($this->idKategori == 0) {
+                $data = Web::select('page_load_time')->get();
+            } else {
+                $data = Web::select('page_load_time')
+                    ->where('id_kategori', $this->idKategori)
+                    ->get();
+            }
         } else {
             $data = Web::select('page_load_time')
-                ->where('id_kategori', $this->idKategori)
+                ->where('id', $id1)
+                ->orWhere('id', $id2)
                 ->get();
         }
+
         return $data;
     }
 
-    public function getSizeWeb()
+    public function getSizeWeb($mode, $id1, $id2)
     {
-        if ($this->idKategori == 0) {
-            $data = Web::select('size_web')->get();
+        if ($mode == 0) {
+            if ($this->idKategori == 0) {
+                $data = Web::select('size_web')->get();
+            } else {
+                $data = Web::select('size_web')
+                    ->where('id_kategori', $this->idKategori)
+                    ->get();
+            }
         } else {
             $data = Web::select('size_web')
-                ->where('id_kategori', $this->idKategori)
+                ->where('id', $id1)
+                ->orWhere('id', $id2)
                 ->get();
         }
+
         return $data;
     }
 
-    public function getAll()
+    public function getAll($mode, $id1, $id2)
     {
-        if ($this->idKategori == 0) {
-            $data = Web::select('broken_link', 'page_load_time', 'size_web')->get();
+        if ($mode == 0) {
+            if ($this->idKategori == 0) {
+                $data = Web::select('broken_link', 'page_load_time', 'size_web')->get();
+            } else {
+                $data = Web::select('broken_link', 'page_load_time', 'size_web')
+                    ->where('id_kategori', $this->idKategori)
+                    ->get();
+            }
         } else {
             $data = Web::select('broken_link', 'page_load_time', 'size_web')
-                ->where('id_kategori', $this->idKategori)
+                ->where('id', $id1)
+                ->orWhere('id', $id2)
                 ->get();
         }
+
         return $data;
     }
 
