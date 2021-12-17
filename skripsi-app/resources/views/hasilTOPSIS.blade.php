@@ -22,12 +22,13 @@
       <th scope="col">Page Load Time</th>
       <th scope="col">Size</th>
     </tr>
-    @foreach($result as $row)
+    @foreach($result as $val)
 
     <tr>
-      @foreach($row as $val)
-      <td>{{$val}}</td>
-      @endforeach
+      <td>{{$val->nama_web}}</td>
+      <td>{{$val->broken_link}}</td>
+      <td>{{$val->page_load_time}}</td>
+      <td>{{$val->size_web}}</td>
     </tr>
 
     @endforeach
