@@ -455,21 +455,21 @@ class FAHPController extends Controller
         $res = [];
         for ($i = 0; $i < $size; $i++) {
             $res[$i] = [];
-            $temp[$i] = [];
+            // $temp[$i] = [];
         }
 
-        if($size<3){
-            for ($i = 0; $i < 3; $i++) {
-                $temp[$i] = [];
-            }
+        // if($size<3){
+        for ($i = 0; $i < 3; $i++) {
+            $temp[$i] = [];
         }
+        // }
 
         // masukin nilai ke temp
         // dalam satu baris berisikan 
         foreach ($matrix as $row) {
             foreach ($row as $col) {
                 $i = 0;
-                foreach ($col as $value) {                    
+                foreach ($col as $value) {
                     array_push($temp[$i], $value);
                     $i++;
                 }
