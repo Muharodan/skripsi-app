@@ -39,43 +39,40 @@ class MainController extends Controller
         // test data dengan cara diprint
         // $this->print($this->data);
 
-        $brokenLink = $this->webController->getBrokenLink();
-        $pageLoadTime = $this->webController->getPageLoadTime();
-        $sizeWeb = $this->webController->getSizeWeb();
+        $this->webController->setIdKategori($request->kategori);
 
         if($request->btn==1){
-            print("FUZZY AHP");
-            print("<br>");
             $ahp = new FAHPController($this->fuzzyNumber, $this->webController);
-            // print_r($ahp);
 
+            return view('hasilAHP',['result'=>$ahp]);
 
-            return redirect()->route('hasilAHP')->with(['result'=>$ahp, "mode">=0]);
+            // return redirect()->route('hasilAHP')->with(['result'=>$ahp, "mode">=0]);
         }else{
-            print("FUZZY TOPSIS");
+            // print("FUZZY TOPSIS");
 
             $topsis = new FTOPSISController($this->fuzzyNumber, $this->webController);
             // print_r($topsis);
 
-            return redirect()->route('hasilTOPSIS')->with(['result'=>$topsis, 'mode'=>1]);
+            return view('hasilTOPSIS',['result'=>$topsis]);
+            // return redirect()->route('hasilTOPSIS')->with(['result'=>$topsis, 'mode'=>1]);
         }
         
     }
 
-    public function check(){
-        if(Session::get('result')!=null){
-            if(Session::get('mode')==0){
-                return view('/hasilAHP');
-            }else{
-                // print_r(Session::get('result'));
-                return view('/hasilTOPSIS');
-            }
+    // public function check(){
+    //     if(Session::get('result')!=null){
+    //         if(Session::get('mode')==0){
+    //             return view('/hasilAHP');
+    //         }else{
+    //             // print_r(Session::get('result'));
+    //             return view('/hasilTOPSIS');
+    //         }
             
-            // print_r(Session::get('result'));
-        }else{
-            return redirect()->route('index');
-        }
-    }
+    //         // print_r(Session::get('result'));
+    //     }else{
+    //         return redirect()->route('index');
+    //     }
+    // }
 
     /**
      * Function for upload csv into folder upload in public
