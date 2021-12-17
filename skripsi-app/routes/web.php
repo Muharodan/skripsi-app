@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WebController::class, 'index'])->name('index');
 Route::get('/compare', [WebController::class, 'compare']);
+Route::post('/compare', [MainController::class, 'compare']);
 
 Route::get('/hasilAHP', [MainController::class, 'hasilAHP'])->name('hasilAHP');
 Route::get('/hasilTOPSIS', [MainController::class, 'hasilTOPSIS'])->name('hasilTOPSIS');
