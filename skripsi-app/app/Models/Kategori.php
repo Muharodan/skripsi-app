@@ -13,4 +13,8 @@ class Kategori extends Model
         'id',
         'nama_kategori'
     ];
+
+    public function web(){
+        return $this->hasMany(Web::class, 'id_kategori', 'id');
+    }
 }
