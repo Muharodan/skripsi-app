@@ -46,13 +46,14 @@
       <!-- <a class="fuzzytopsis"> -->
       <button class="btn btn-primary" name="btn" id="topsis" type="submit" value="2">Fuzzy topsis</button>
       <!-- </a> -->
-
-
     </form>
     <!-- </a> -->
-
-
   </div>
+
+  <a href="/compare">
+    <button class="btn btn-primary">Compare</button>
+  </a>
+  
   <h1>Data Website</h1>
   <table class="table table-striped">
     <thead>
