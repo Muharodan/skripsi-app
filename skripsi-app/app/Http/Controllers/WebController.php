@@ -15,64 +15,89 @@ class WebController extends Controller
         $this->kategoriController = new KategoriController();
     }
 
-    public function setIdKategori($id){
+    public function setIdKategori($id)
+    {
         $this->idKategori = $id;
     }
 
-    public function index(){
+    public function index()
+    {
         $listWeb = DB::table('webs')->paginate(10);
 
         $kategori = $this->kategoriController->index();
 
-        return view('home', ['listWeb'=>$listWeb, 'kategori'=>$kategori]);
+        return view('home', ['listWeb' => $listWeb, 'kategori' => $kategori]);
     }
 
-    public function getBrokenLink(){
-        if($this->idKategori==0){
+    public function compare()
+    {
+        $listWeb = DB::table('webs')->paginate(10);
+
+        return view('compare', ['listWeb' => $listWeb]);
+    }
+
+    public function getId()
+    {
+        if ($this->idKategori == 0) {
+            $data = Web::select('id')->get();
+        } else {
+            $data = Web::select('id')
+                ->where('id_kategori', $this->idKategori)
+                ->get();
+        }
+        return $data;
+    }
+
+    public function getBrokenLink()
+    {
+        if ($this->idKategori == 0) {
             $data = Web::select('broken_link')->get();
-        }else{
+        } else {
             $data = Web::select('broken_link')
-            ->where('id_kategori', $this->idKategori)
-            ->get();
+                ->where('id_kategori', $this->idKategori)
+                ->get();
         }
         return $data;
     }
 
-    public function getPageLoadTime(){
-        if($this->idKategori==0){
+    public function getPageLoadTime()
+    {
+        if ($this->idKategori == 0) {
             $data = Web::select('page_load_time')->get();
-        }else{
+        } else {
             $data = Web::select('page_load_time')
-            ->where('id_kategori', $this->idKategori)
-            ->get();
+                ->where('id_kategori', $this->idKategori)
+                ->get();
         }
         return $data;
     }
 
-    public function getSizeWeb(){
-        if($this->idKategori==0){
+    public function getSizeWeb()
+    {
+        if ($this->idKategori == 0) {
             $data = Web::select('size_web')->get();
-        }else{
+        } else {
             $data = Web::select('size_web')
-            ->where('id_kategori', $this->idKategori)
-            ->get();
+                ->where('id_kategori', $this->idKategori)
+                ->get();
         }
         return $data;
     }
 
-    public function getAll(){
-        if($this->idKategori==0){
+    public function getAll()
+    {
+        if ($this->idKategori == 0) {
             $data = Web::select('broken_link', 'page_load_time', 'size_web')->get();
-        }else{
+        } else {
             $data = Web::select('broken_link', 'page_load_time', 'size_web')
-            ->where('id_kategori', $this->idKategori)
-            ->get();
+                ->where('id_kategori', $this->idKategori)
+                ->get();
         }
         return $data;
     }
 
-    public function find($id){
-        return DB::table('webs')->find($id+1);
-        
+    public function find($id)
+    {
+        return DB::table('webs')->find($id);
     }
 }
