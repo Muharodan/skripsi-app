@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 // })->name('index');
 
 Route::get('/', [WebController::class, 'index'])->name('index');
+Route::get('/compare', [WebController::class, 'compare']);
 
 // Route::get('/hasilAHP', [MainController::class, 'check'])->name('hasilAHP');
 // Route::get('/hasilTOPSIS', [MainController::class, 'check'])->name('hasilTOPSIS');
@@ -36,5 +37,9 @@ Route::get('/hasil', [MainController::class, 'index']);
 Route::get('/home', function () {
     return view('home');
 });
+
+// Route::get('/compare', function () {
+//     return view('compare');
+// });
 
 Route::post('/hasil', [MainController::class, 'index']);
