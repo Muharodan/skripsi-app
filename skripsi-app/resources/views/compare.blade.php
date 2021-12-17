@@ -37,7 +37,7 @@
                                 @foreach($listWeb as $web)
                                 <li class="li-left">
                                     <label for="data-left-{{$web->id}}" class="label-left"> {{$web->nama_web}}</label>
-                                    <input type="checkbox" name="data-left-{{$web->id}}" value="{{$web->id}}" style="float: right; margin-right: 15px;">
+                                    <input type="checkbox" name="data_left_{{$web->id}}" value="{{$web->id}}" style="float: right; margin-right: 15px;">
 
                                 </li>
                                 @endforeach
@@ -51,7 +51,7 @@
                                 @foreach($listWeb as $web)
                                 <li class="li-right">
                                     <label for="data-right-{{$web->id}}" class="label-right"> {{$web->nama_web}}</label>
-                                    <input type="checkbox" name="data-right-{{$web->id}}" value="{{$web->id}}" style="float: right; margin-right: 15px;">
+                                    <input type="checkbox" name="data_right_{{$web->id}}" value="{{$web->id}}" style="float: right; margin-right: 15px;">
 
                                 </li>
                                 @endforeach
@@ -63,10 +63,18 @@
             </table>
 
             <br>
-            <button class="btn btn-primary" name="btn" type="submit" value="compare" style="float: right;">Compare</button>
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-primary" name="btn" id="ahp" type="submit" value="1">Fuzzy AHP</button>
+                <button class="btn btn-primary" name="btn" id="topsis" type="submit" value="2" style="margin-left: 10px;">Fuzzy topsis</button>
+            </div>
+            <!-- <button class="btn btn-primary" name="btn" type="submit" value="compare" style="float: right;">Compare</button> -->
         </form>
     </div>
 
+    <br>
+    <a class="fuzzyahp" href="/">
+        <button class="btn btn-primary" name="home">home</button>
+    </a>
 </body>
 
 </html>
