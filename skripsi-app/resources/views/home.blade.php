@@ -21,7 +21,7 @@
 <body>
   <div class="buttons d-flex justify-content-center">
     <!-- <a class="upload"> -->
-    <form action="{{url('/hasil')}}" method="post" enctype="multipart/form-data">
+    <form action="{{url('/proses')}}" method="post" enctype="multipart/form-data">
       @csrf
 
       <!-- Select excel file to upload
@@ -34,7 +34,7 @@
       <select class="form-select" name="kategori" aria-label="Default select example" required>
         <option value="0">All</option>
         @foreach($kategori as $k)
-          <option value={{$k['id']}}>{{$k['nama_kategori']}}</option>
+        <option value={{$k['id']}}>{{$k['nama_kategori']}}</option>
         @endforeach
       </select>
 
