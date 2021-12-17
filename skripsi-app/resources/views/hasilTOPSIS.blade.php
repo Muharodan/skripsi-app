@@ -18,63 +18,21 @@
 
   <table class="table table-striped">
     <!-- <thead> -->
-      <tr>
-        <th scope="col">Alternatif\Kriteria</th>
-        <th scope="col">Broken Link</th>
-        <th scope="col">Page Load Time</th>
-        <th scope="col">Size</th>
-      </tr>
+    <tr>
+      <th scope="col">Alternatif\Kriteria</th>
+      <th scope="col">Broken Link</th>
+      <th scope="col">Page Load Time</th>
+      <th scope="col">Size</th>
+    </tr>
     <!-- </thead> -->
     <!-- <tbody> -->
-      <?php
-
-        $result = Session::get('result')->result;
-        // $keys = array_keys($result);
-        // print_r($result);
-        foreach($result as $row){
-          echo "<tr>";
-          foreach($row as $val){
-            echo "<td>".$val."</td>";
-          }
-          echo "</tr>";
-        }
-
-      ?>
-    <!-- </tbody> -->
-
-    <!-- <tbody>
-      <tr>
-        <th scope="row">Amazon</th>
-        <td>0.047 seconds</td>
-        <td>281</td>
-        <td>317</td>
-      </tr>
-      <tr>
-        <th scope="row">Google</th>
-        <td>0.102 Seconds</td>
-        <td>16020 Bytes</td>
-        <td>2</td>
-      </tr>
-      <tr>
-        <th scope="row">Merriam-webster</th>
-        <td>0.108 seconds</td>
-        <td>143155</td>
-        <td>22</td>
-      </tr>
-      <tr>
-        <th scope="row">Apple</th>
-        <td>0.82 seconds</td>
-        <td>70443</td>
-        <td>2</td>
-      </tr>
-      <tr>
-        <th scope="row">Facebook</th>
-        <td>2.12</td>
-        <td>84027</td>
-        <td>0</td>
-      </tr>
-    </tbody> -->
-    
+    @foreach($result->result as $row)
+    <tr>
+      @foreach($row as $val)
+      <td>{{$val}}</td>
+      @endforeach
+    </tr>
+    @endforeach
   </table>
 
   <br>
