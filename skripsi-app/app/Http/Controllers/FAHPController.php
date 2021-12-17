@@ -8,7 +8,7 @@ class FAHPController extends Controller
 
     public $result;
 
-    function __construct($fuzzyNumber, $webController)
+    function __construct($fuzzyNumber, $webController, $mode, $id1, $id2)
     {
 
         // broken_link idx 0
@@ -49,7 +49,7 @@ class FAHPController extends Controller
         // Broken Link
         // google, facebook, amazon, imdb (dalam bytes)
         // $DBL = [0, 40, 75, 28];
-        $DBL = $webController->getBrokenLink();
+        $DBL = $webController->getBrokenLink($mode, $id1, $id2);
         $DBL = $this->convertToArray2D($DBL, 0);
         // print("<br><br> Data Broken Link<br>");
         // print_r($DBL);
@@ -97,7 +97,7 @@ class FAHPController extends Controller
         // data sidik
         // LOAD TIME
         // $data = [105, 651, 051, 2046];
-        $DPLT = $webController->getPageLoadTime();
+        $DPLT = $webController->getPageLoadTime($mode, $id1, $id2);
         $DPLT = $this->convertToArray2D($DPLT, 1);
         // print("<br><br> Data Load Time (dalam ms)<br>");
         // print_r($DPLT);
@@ -135,7 +135,7 @@ class FAHPController extends Controller
         // SIZE
         // google, facebook, amazon, imdb (dalam bytes)
         // $data = [16020, 84027, 281, 670916];
-        $DSW = $webController->getSizeWeb();
+        $DSW = $webController->getSizeWeb($mode, $id1, $id2);
         $DSW = $this->convertToArray2D($DSW, 2);
         // print("<br><br> Data Size (dalam bytes)<br>");
         // print_r($DSW);

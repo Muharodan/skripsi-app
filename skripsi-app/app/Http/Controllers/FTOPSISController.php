@@ -8,7 +8,7 @@ class FTOPSISController extends Controller
 {
     public $result;
 
-    function __construct($fuzzyNumber, $webController)
+    function __construct($fuzzyNumber, $webController, $mode, $id1, $id2)
     {
         // $fuzzyNumber = [
         //     [1,1,3], // very low, 0
@@ -63,7 +63,7 @@ class FTOPSISController extends Controller
         // $this->print($data);
         // print("<br>");
 
-        $data = $webController->getAll();
+        $data = $webController->getAll($mode, $id1, $id2);
         //bl, pl, s
         $data = $this->convertToArray2D($data);
         // print("<br>DATA Convert ke Array 2D");

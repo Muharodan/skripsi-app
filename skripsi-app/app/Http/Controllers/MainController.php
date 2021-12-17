@@ -44,31 +44,58 @@ class MainController extends Controller
 
         $result = [];
         if ($request->btn == 1) {
-            $ahp = new FAHPController($this->fuzzyNumber, $this->webController);
+            $ahp = new FAHPController($this->fuzzyNumber, $this->webController, 0, 0, 0);
             $result = $ahp->result;
 
             $this->tempController->store($result);
 
-            return redirect()->route('hasilAHP')->with(['result'=>$result]);
+            return redirect()->route('hasilAHP')->with(['result' => $result]);
         } else {
-            $topsis = new FTOPSISController($this->fuzzyNumber, $this->webController);
+            $topsis = new FTOPSISController($this->fuzzyNumber, $this->webController, 0, 0, 0);
             $result = $topsis->result;
             // $result = $this->paginate($result);
 
             $this->tempController->store($result);
 
-            return redirect()->route('hasilTOPSIS')->with(['result'=>$result]);
+            return redirect()->route('hasilTOPSIS')->with(['result' => $result]);
         }
-
-        
     }
 
-    public function hasilAHP(){
+    public function compare(Request $request)
+    {
+        print_r($request->all());
+
+        $keys = array_keys($request->all());
+        $id1 = $request[$keys[1]];
+        $id2 = $request[$keys[2]];
+        $btn = $request[$keys[3]];
+
+        if ($btn == 1) {
+            $ahp = new FAHPController($this->fuzzyNumber, $this->webController, 1, $id1, $id2);
+            $result = $ahp->result;
+
+            $this->tempController->store($result);
+
+            return redirect()->route('hasilAHP')->with(['result' => $result]);
+        } else {
+            $topsis = new FTOPSISController($this->fuzzyNumber, $this->webController, 1, $id1, $id2);
+            $result = $topsis->result;
+            // $result = $this->paginate($result);
+
+            $this->tempController->store($result);
+
+            return redirect()->route('hasilTOPSIS')->with(['result' => $result]);
+        }
+    }
+
+    public function hasilAHP()
+    {
         $result = $this->tempController->index();
         return view('hasilAHP', compact('result'));
     }
 
-    public function hasilTOPSIS(){
+    public function hasilTOPSIS()
+    {
         $result = $this->tempController->index();
         return view('hasilTOPSIS', compact('result'));
     }
@@ -81,7 +108,7 @@ class MainController extends Controller
     //             // print_r(Session::get('result'));
     //             return view('/hasilTOPSIS');
     //         }
-            
+
     //         // print_r(Session::get('result'));
     //     }else{
     //         return redirect()->route('index');
