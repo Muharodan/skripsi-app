@@ -136,7 +136,7 @@ class FTOPSISController extends Controller
 
         $cc = $this->closenessCoefficient($fpis, $fnis);
 
-        $data = $webController->getId();
+        $data = $webController->getId($mode, $id1, $id2);
         $id = [];
         foreach ($data as $d) {
             array_push($id, $d->id);

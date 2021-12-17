@@ -186,7 +186,7 @@ class FAHPController extends Controller
         // print("Index min: ".$min[0]. " dengan nilai: ".$result[$min[0]]." Pada web : ");
         // print_r($this->webController->find($min[0]));
 
-        $id = $webController->getId();
+        $id = $webController->getId($mode, $id1, $id2);
         $id = $this->convertToArray2D($id, 3);
         // print_r($id);
 
