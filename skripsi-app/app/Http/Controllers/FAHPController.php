@@ -191,10 +191,17 @@ class FAHPController extends Controller
         // print("Index min: ".$min[0]. " dengan nilai: ".$result[$min[0]]." Pada web : ");
         // print_r($this->webController->find($min[0]));
 
+        $id = $webController->getId();
+        $id = $this->convertToArray2D($id, 3);
+        // print_r($id);
+
         $res = [];
         for ($i = 0; $i < count($result); $i++) {
-            $res["id-" . ($i)] = $result[$i];
+            $res["id-" . $id[$i]] = $result[$i];
         }
+
+        // print_r($res);
+
 
         // print("<br>");
         // sort besar ke kecil
@@ -231,8 +238,10 @@ class FAHPController extends Controller
                 array_push($result, $d->broken_link);
             } else if ($mode == 1) { //page_load_time
                 array_push($result, $d->page_load_time);
-            } else { // size_web
+            } else if ($mode == 2) { // size_web
                 array_push($result, $d->size_web);
+            }else{
+                array_push($result, $d->id);
             }
         }
         return $result;

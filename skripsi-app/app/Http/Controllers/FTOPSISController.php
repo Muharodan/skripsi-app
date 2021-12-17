@@ -135,9 +135,18 @@ class FTOPSISController extends Controller
         // print("<br>");
 
         $cc = $this->closenessCoefficient($fpis, $fnis);
+
+        $data = $webController->getId();
+        $id = [];
+        foreach ($data as $d) {
+            array_push($id, $d->id);
+        }
+        $res = [];
+        // print_r($res);
+
         $res=[];
         for($i=0;$i<count($cc);$i++){
-            $res["id-".($i)]=$cc[$i];
+            $res["id-" . $id[$i]]=$cc[$i];
         }
 
         arsort($res);
