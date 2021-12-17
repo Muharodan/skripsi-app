@@ -26,6 +26,9 @@ class WebController extends Controller
 
         $kategori = $this->kategoriController->index();
 
+        $tempController = new TempController();
+        $tempController->delete();
+        
         return view('home', ['listWeb' => $listWeb, 'kategori' => $kategori]);
     }
 
