@@ -62,6 +62,7 @@ class WebController extends Controller
 
     public function getPageLoadTime()
     {
+        // print( $this->idKategori);
         if ($this->idKategori == 0) {
             $data = Web::select('page_load_time')->get();
         } else {

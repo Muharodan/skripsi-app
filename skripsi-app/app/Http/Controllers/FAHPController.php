@@ -2,10 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class FAHPController extends Controller
 {
@@ -32,7 +28,6 @@ class FAHPController extends Controller
             // array(1/7,1/3,1/3,1),
 
         );
-
         // bacanya kanan ke kiri
         $DK = $this->changeToFuzzyNumber($DK, $fuzzyNumber);
         // print("PAIRWISE SETELAH CHANGE TO FUZZY NUMBER ". "DENGAN UKURAN MATRIX ".count($DK) ."<br>");
@@ -240,7 +235,7 @@ class FAHPController extends Controller
                 array_push($result, $d->page_load_time);
             } else if ($mode == 2) { // size_web
                 array_push($result, $d->size_web);
-            }else{
+            } else {
                 array_push($result, $d->id);
             }
         }
@@ -455,6 +450,7 @@ class FAHPController extends Controller
     private function calculateGeomecricMean($matrix)
     {
         $size = count($matrix);
+        // print("SIZE MATRIX: ".$size. "<br>");
         $temp = [];
         $res = [];
         for ($i = 0; $i < $size; $i++) {
@@ -462,12 +458,18 @@ class FAHPController extends Controller
             $temp[$i] = [];
         }
 
+        if($size<3){
+            for ($i = 0; $i < 3; $i++) {
+                $temp[$i] = [];
+            }
+        }
+
         // masukin nilai ke temp
         // dalam satu baris berisikan 
         foreach ($matrix as $row) {
             foreach ($row as $col) {
                 $i = 0;
-                foreach ($col as $value) {
+                foreach ($col as $value) {                    
                     array_push($temp[$i], $value);
                     $i++;
                 }
