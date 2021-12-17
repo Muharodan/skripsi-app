@@ -19,6 +19,7 @@ class CreateWebsTable extends Migration
             $table->integer("broken_link");
             $table->integer("page_load_time");
             $table->integer("size_web");
+            $table->foreignId("id_kategori")->constrained("kategoris");
             $table->timestamps();
         });
     }
