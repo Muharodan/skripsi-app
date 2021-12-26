@@ -59,9 +59,9 @@
     <thead>
       <tr>
         <th scope="col">Alternatif\Kriteria</th>
+        <th scope="col">Broken Link</th>
         <th scope="col">Page Load Time</th>
         <th scope="col">Size</th>
-        <th scope="col">Broken Link</th>
       </tr>
     </thead>
     <tbody>
