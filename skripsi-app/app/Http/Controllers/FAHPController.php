@@ -16,10 +16,31 @@ class FAHPController extends Controller
         // size_web idx 2
         // Data Kriteria
         $DK = array(
-            //Sidik
+            // Sidik
             array(1, 2 / 1, 4 / 1),
             array(1 / 2, 1, 3 / 1),
             array(1 / 4, 1 / 3, 1),
+
+
+            //pnegujian semua sama
+            // array(1, 1 , 1),
+            // array(1, 1, 1),
+            // array(1, 1, 1),
+
+            //pengujian broken link lebih penting
+            // array(1, 5, 5),
+            // array(1/5, 1, 1),
+            // array(1/5, 1, 1),
+
+            //pengujian page load time lebih penting
+            // array(1, 1/5, 1),
+            // array(5, 1, 5),
+            // array(1, 1/5, 1),
+
+            //pengujian size web lebih penting
+            // array(1, 1, 1/5),
+            // array(1, 1, 1/5),
+            // array(5, 5, 1),
 
             //Youtube
             // array(1,5,4,7),
@@ -201,7 +222,7 @@ class FAHPController extends Controller
         // print("<br>");
         // sort besar ke kecil
         arsort($res);
-        // print_r($res);
+        // dd($res);
 
         // print("<br>");
         $this->result = [];
@@ -242,19 +263,19 @@ class FAHPController extends Controller
         return $result;
     }
 
-    private function calculateResult($kriteria, $brokenlink, $loadTime, $headerSize)
+    private function calculateResult($kriteria, $brokenLink, $loadTime, $sizeWeb)
     {
         $arr = [];
         for ($i = 0; $i < count($kriteria); $i++) {
             $arrt[$i] = [];
-            for ($j = 0; $j < count($brokenlink); $j++) {
+            for ($j = 0; $j < count($brokenLink); $j++) {
                 $arr[$i][$j] = [];
                 if ($i == 0) { //broken link
-                    array_push($arr[$i][$j], $kriteria[$i] * $brokenlink[$j]);
+                    array_push($arr[$i][$j], $kriteria[$i] * $brokenLink[$j]);
                 } else if ($i == 1) { //load time
                     array_push($arr[$i][$j], $kriteria[$i] * $loadTime[$j]);
                 } else { // header size
-                    array_push($arr[$i][$j], $kriteria[$i] * $headerSize[$j]);
+                    array_push($arr[$i][$j], $kriteria[$i] * $sizeWeb[$j]);
                 }
             }
         }

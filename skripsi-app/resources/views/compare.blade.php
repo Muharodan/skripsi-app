@@ -16,6 +16,7 @@
 </head>
 
 <body>
+    <h1>Untuk Perbandingan 2 Website</h1>
     <div class="d-flex justify-content-center">
         <!-- <a class="upload"> -->
         <form action="{{url('/compare')}}" method="post">

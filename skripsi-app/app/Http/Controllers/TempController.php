@@ -11,7 +11,7 @@ class TempController extends Controller
     //
 
     public function index(){
-        return Temp::paginate(20);
+        return Temp::paginate(10);
     }
 
     public function store($data)
