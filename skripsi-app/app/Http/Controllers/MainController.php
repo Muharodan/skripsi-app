@@ -40,7 +40,7 @@ class MainController extends Controller
         // test data dengan cara diprint
         // $this->print($this->data);
 
-        $this->webController->setIdKategori($request->kategori);
+        $this->webController->setIdKategori($request->kategori*1);
 
         $result = [];
         if ($request->btn == 1) {

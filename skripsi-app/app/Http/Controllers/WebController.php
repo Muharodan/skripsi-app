@@ -43,17 +43,18 @@ class WebController extends Controller
     {
         if ($mode == 0) {
             if ($this->idKategori == 0) {
-                $data = Web::select('id')->get();
+                $data = Web::select('id')
+                ->orderBy('id', 'ASC')->get();
             } else {
                 $data = Web::select('id')
                     ->where('id_kategori', $this->idKategori)
-                    ->get();
+                    ->orderBy('id', 'ASC')->get();
             }
         } else {
             $data = Web::select('id')
                 ->where('id', $id1)
                 ->orWhere('id', $id2)
-                ->get();
+                ->orderBy('id', 'ASC')->get();
         }
 
         return $data;
