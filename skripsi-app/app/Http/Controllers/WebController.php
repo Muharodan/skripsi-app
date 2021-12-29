@@ -34,7 +34,7 @@ class WebController extends Controller
 
     public function compare()
     {
-        $listWeb = DB::table('webs')->paginate(10);
+        $listWeb = DB::table('webs')->paginate(100);
 
         return view('compare', ['listWeb' => $listWeb]);
     }
