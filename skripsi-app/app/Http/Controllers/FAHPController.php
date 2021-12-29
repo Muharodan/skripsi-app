@@ -17,9 +17,13 @@ class FAHPController extends Controller
         // Data Kriteria
         $DK = array(
             //Sidik
-            array(1, 2 / 1, 4 / 1),
-            array(1 / 2, 1, 3 / 1),
-            array(1 / 4, 1 / 3, 1),
+            // array(1, 2 / 1, 4 / 1),
+            // array(1 / 2, 1, 3 / 1),
+            // array(1 / 4, 1 / 3, 1),
+
+            array(1,5,5),
+            array(0.2, 1, 1),
+            array(0.2,1,1)
 
             //Youtube
             // array(1,5,4,7),
@@ -195,6 +199,7 @@ class FAHPController extends Controller
             $res["id-" . $id[$i]] = $result[$i];
         }
 
+        
         // print_r($res);
 
 
